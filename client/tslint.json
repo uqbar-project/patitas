@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "../tslint.json",
+    "tslint-react"
+  ],
+  "rules": {
+    "jsx-boolean-value": false
+  }
+}

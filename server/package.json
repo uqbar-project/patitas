@@ -1,0 +1,21 @@
+{
+  "name": "patitas-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.ts",
+  "license": "ISC",
+  "scripts": {
+    "start": "ts-node-dev --respawn $npm_package_main",
+    "build": "rm -rf ./build && mkdir ./build && tsc --outDir ./build"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-async-router": "^0.1.15",
+    "mongodb": "^3.4.1",
+    "typescript": "^3.7.4"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.44",
+    "tslint": "^5.20.1"
+  }
+}
