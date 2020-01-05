@@ -15,6 +15,7 @@
     "typescript": "^3.7.4"
   },
   "devDependencies": {
+    "@types/mongodb": "^3.3.14",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.20.1"
   }
