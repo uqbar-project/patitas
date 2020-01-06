@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
 import { Db, MongoClient } from 'mongodb'
+
 declare global {
   namespace Express {
     interface Request {

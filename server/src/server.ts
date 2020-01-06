@@ -1,3 +1,4 @@
+import json from 'body-parser'
 import express from 'express'
 import mongo from './mongo'
 import router from './routes'
@@ -12,7 +13,7 @@ const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING ||
 const app = express()
 
 app.use(mongo(MONGO_CONNECTION_STRING, `patitas-${NODE_ENV}`))
-
+app.use(json())
 app.use(router)
 
 app.listen(PORT, () => log(`Server started in ${NODE_ENV} mode at http://localhost:${PORT}`))
