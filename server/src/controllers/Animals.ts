@@ -17,7 +17,7 @@ export default (db: Db) => ({
     collection(db).save(doc)
   },
 
-  destroy: async (id: string) => collection(db).remove(new ObjectId(id)),
+  destroy: async (id: string) => { collection(db).deleteOne({ _id: id }) },
 
   update: async (id: string, delta: Partial<Animal>) => {
     const col = collection(db)
