@@ -1,0 +1,24 @@
+{
+  "animal": {
+    "age": "edad",
+    "gender": {
+      "label": "genero",
+      "F": "hembra",
+      "M": "macho"
+    },
+    "image": "foto",
+    "info": "info",
+    "name": "nombre",
+    "size": {
+      "label": "tamaño",
+      "S": "chico",
+      "M": "medio",
+      "L": "grande"
+    },
+    "species": {
+      "label": "especie",
+      "dog": "perro",
+      "cat": "gato"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+$color-primary: rgb(255, 88, 55);
+$color-secondary: rgb(255, 255, 255);
+$color-background-primary: rgb(255, 255, 255);
+$color-background-secondary: rgb(255, 204, 128);
+$color-font-default: rgba(0, 0, 0, 0.6);
+$color-font-highlight: rgb(226, 129, 78);
+
+$font-default: 16px Raleway, sans-serif;
+
+@mixin tablet {
+  @media only screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: 1024px) {
+    @content;
+  }
+}
