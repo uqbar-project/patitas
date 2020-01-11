@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@types/mongodb": "^3.3.14",
+    "mongodb-memory-server": "^6.2.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.20.1"
   }
