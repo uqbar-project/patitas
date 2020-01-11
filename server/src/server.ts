@@ -1,4 +1,4 @@
-import json from 'body-parser'
+import { json } from 'body-parser'
 import express from 'express'
 import mongo from './mongo'
 import router from './routes'
