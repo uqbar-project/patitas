@@ -2,11 +2,12 @@
   "name": "patitas-server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.ts",
+  "main": "src/index.ts",
   "license": "ISC",
   "scripts": {
     "start": "ts-node-dev --respawn $npm_package_main",
-    "build": "rm -rf ./build && mkdir ./build && tsc --outDir ./build"
+    "build": "rm -rf ./build && mkdir ./build && tsc --outDir ./build",
+    "test": "mocha -t 60000 --exit -r ts-node/register test/**/*.test.ts"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -16,7 +17,12 @@
     "typescript": "^3.7.4"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.7",
+    "@types/mocha": "^5.2.7",
     "@types/mongodb": "^3.3.14",
+    "axios": "^0.19.1",
+    "chai": "^4.2.0",
+    "mocha": "^7.0.0",
     "mongodb-memory-server": "^6.2.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.20.1"
