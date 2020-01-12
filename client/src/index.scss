@@ -5,6 +5,11 @@ html {
   font: $font-default;
 }
 
+body,
+#root {
+  height: 100vh;
+}
+
 *,
 *:before,
 *:after {
@@ -54,4 +59,10 @@ textarea:read-only {
 
 textarea {
   height: 10ex;
+}
+
+a {
+  svg {
+    fill: $color-primary;
+  }
 }

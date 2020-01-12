@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import AnimalForm from './components/AnimalForm/AnimalForm'
+import Layout from './components/Layout/Layout'
 import AnimalsHome from './components/pages/pages/AnimalsHome/AnimalsHome'
 import './index.scss'
 import * as i18n from './services/i18n'
@@ -21,6 +22,55 @@ const animal = {
 const routes = (
   <Switch>
     <Redirect exact from='/' to='/animals' />
+    <Route exact path='/layoutTest'><Layout>
+      <p>Body
+      ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+        ... <br />
+
+
+        A very long one...</p>
+    </Layout></Route>
     <Route exact path='/animals' component={AnimalsHome} />
     <Route exact path='/animal'><AnimalForm animal={animal} /></Route>
     <Redirect to='/' />

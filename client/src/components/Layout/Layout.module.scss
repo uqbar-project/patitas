@@ -1,0 +1,51 @@
+@import "../../theme";
+
+.layout {
+  height: 100%;
+  display: grid;
+
+  grid-template-columns: 100%;
+  grid-template-rows: 2em auto 2em 1em;
+  grid-template-areas:
+    "header"
+    "main"
+    "menu"
+    "footer";
+
+  @include desktop {
+    grid-template-columns: 12em minmax(calc(1024px - 12em), calc(100% - 24em)) auto;
+    grid-template-rows: 2em auto 1em;
+    grid-template-areas:
+      "header header header"
+      "menu   main   ."
+      "menu   footer .";
+  }
+}
+
+.header {
+  background-color: red;
+  grid-area: header;
+}
+
+.menu {
+  white-space: nowrap;
+  background-color: blue;
+  grid-area: menu;
+
+  display: flex;
+  flex-direction: row;
+
+  @include desktop {
+    flex-direction: column;
+  }
+}
+
+.main {
+  background-color: green;
+  grid-area: main;
+}
+
+.footer {
+  background-color: yellow;
+  grid-area: footer;
+}
