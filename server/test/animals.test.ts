@@ -34,6 +34,8 @@ const createAnimal = (delta: Partial<Animal>): Animal => {
     ...delta
   }
 }
+const createMultipleAnimals = (n: number): Animal[] => Array.from({ length: n }, (_, _i) => createAnimal({}))
+
 const save = <T>(collectionName: string) => async (...objectsToSave: T[]) => {
   const collection = mongoClient.db('patitas-test').collection<T>(collectionName)
   for (const objectToSave of objectsToSave) {
@@ -58,13 +60,28 @@ describe('Animals API', () => {
   })
 
   it('Pagination for /animals limits the response to the expected amount', async () => {
-    const animals = Array.from({ length: 10 }, (_, _i) => createAnimal({}))
+    const animals = createMultipleAnimals(10)
     await save<Animal>('animals')(...animals)
 
     const limit = 3
-    const response = await instance.get<Animal[]>(`/animals?limit=${limit}&start=2`)
+    const response = await instance.get<Animal[]>(`/animals?limit=${limit}`)
 
     response.data.length.should.be.equal(limit)
+  })
+
+  it('Pagination for /animals brings the expected animals basing on a start amount', async () => {
+    const animals = createMultipleAnimals(10)
+    await save<Animal>('animals')(...animals)
+
+    const limit = 3
+    const start = 2
+    const response = await instance.get<Animal[]>(`/animals?limit=${limit}&start=${start}`)
+
+    const expectedAnimals = animals.slice(start, start + limit)
+
+    response.data
+      .map(withoutId)
+      .should.be.deep.equal(expectedAnimals)
   })
 })
 
