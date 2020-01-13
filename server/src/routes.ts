@@ -9,7 +9,12 @@ router.get('/ping', async () => 'OK')
 // ANIMALS
 // ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-router.get('/animals', async ({ db }) => Animals(db).list())
+router.get('/animals', async ({ query: { limit = 0, start = 0 }, db }) =>
+  Animals(db).list({
+    limit: Number(limit),
+    start: Number(start),
+  })
+)
 
 router.get('/animals/:id', async ({ params: { id }, db }, res) => {
   const response = await Animals(db).read(id)
