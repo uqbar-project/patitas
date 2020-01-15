@@ -5,9 +5,16 @@ import { validate } from '../../../model/Animal'
 const { keys } = Object
 const collection = (db: Db) => db.collection<Animal>('animals')
 
+type ListOptions = { limit: number, start: number }
+
 export default (db: Db) => ({
 
-  list: async () => collection(db).find().toArray(),
+  list: async ({ limit, start }: ListOptions) =>
+    collection(db)
+      .find()
+      .limit(limit)
+      .skip(start)
+      .toArray(),
 
   read: async (id: string) => collection(db).findOne(new ObjectId(id)),
 
