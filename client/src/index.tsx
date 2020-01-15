@@ -1,4 +1,5 @@
 import React from 'react'
+import Root from 'react-div-100vh'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import AnimalForm from './components/AnimalForm/AnimalForm'
@@ -22,59 +23,16 @@ const animal = {
 const routes = (
   <Switch>
     <Redirect exact from='/' to='/animals' />
-    <Route exact path='/layoutTest'><Layout>
-      <p>Body
-      ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-        ... <br />
-
-
-        A very long one...</p>
-    </Layout></Route>
-    <Route exact path='/animals' component={AnimalsHome} />
-    <Route exact path='/animal'><AnimalForm animal={animal} /></Route>
+    <Route exact path='/animals'><Layout><AnimalsHome /></Layout></Route>
+    <Route exact path='/animal'><Layout><AnimalForm animal={animal} /></Layout></Route>
     <Redirect to='/' />
   </Switch >
+)
+
+const app = (
+  <Root>
+    <Router>{routes}</Router>
+  </Root>
 )
 
 const launch = async () => {
@@ -82,7 +40,7 @@ const launch = async () => {
     i18n.init(),
   ])
 
-  ReactDOM.render(<Router>{routes}</Router>, document.getElementById('root'))
+  ReactDOM.render(app, document.getElementById('root'))
   // If you want your app to work offline and load faster, you can change
   // unregister() to register() below. Note this comes with some pitfalls.
   // Learn more about service workers: https://bit.ly/CRA-PWA

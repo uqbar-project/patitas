@@ -1,4 +1,13 @@
 {
+  "organization": {
+    "name": "Red PATITAS"
+  },
+  "navigation": {
+    "explore": "explorar",
+    "members": "la red",
+    "contact": "contacto",
+    "about": "sobre Red PATITAS"
+  },
   "animal": {
     "age": "edad",
     "gender": {

@@ -1,4 +1,6 @@
 import React, { ReactNode } from 'react'
+import Header from '../Header/Header'
+import NavigationMenu from '../NavigationMenu/NavigationMenu'
 import $ from './Layout.module.scss'
 
 type Props = {
@@ -7,15 +9,18 @@ type Props = {
 
 export default ({ children }: Props) => (
   <div className={$.layout}>
-    <div className={$.header}>
-      <div>Header entry 1</div>
-    </div>
-    <div className={$.menu}>
-      <div>Menu Action 1</div>
-      <div>Menu Action 2</div>
-      <div>Menu Action N+1</div>
-    </div>
-    <div className={$.main}>{children}</div>
-    <div className={$.footer} />
+    <header>
+      <Header />
+    </header>
+
+    <nav>
+      <NavigationMenu />
+    </nav>
+
+    <main>
+      {children}
+      <footer />
+    </main>
+
   </div>
 )

@@ -1,51 +1,41 @@
 @import "../../theme";
 
+$desktop-nav-width: 13em;
+
 .layout {
   height: 100%;
   display: grid;
 
   grid-template-columns: 100%;
-  grid-template-rows: 2em auto 2em 1em;
+  grid-template-rows: 3em auto 3em;
   grid-template-areas:
     "header"
     "main"
-    "menu"
-    "footer";
+    "menu";
 
   @include desktop {
-    grid-template-columns: 12em minmax(calc(1024px - 12em), calc(100% - 24em)) auto;
-    grid-template-rows: 2em auto 1em;
+    grid-template-columns: $desktop-nav-width auto;
+    grid-template-rows: 3em auto;
     grid-template-areas:
-      "header header header"
-      "menu   main   ."
-      "menu   footer .";
+      "header header"
+      "menu   main";
   }
-}
 
-.header {
-  background-color: red;
-  grid-area: header;
-}
-
-.menu {
-  white-space: nowrap;
-  background-color: blue;
-  grid-area: menu;
-
-  display: flex;
-  flex-direction: row;
-
-  @include desktop {
-    flex-direction: column;
+  & > header {
+    grid-area: header;
+    border-bottom: 1px solid #dddddd;
   }
-}
 
-.main {
-  background-color: green;
-  grid-area: main;
-}
+  & > nav {
+    grid-area: menu;
+  }
 
-.footer {
-  background-color: yellow;
-  grid-area: footer;
+  & > main {
+    grid-area: main;
+    overflow-y: auto;
+
+    @include desktop {
+      padding-right: $desktop-nav-width;
+    }
+  }
 }

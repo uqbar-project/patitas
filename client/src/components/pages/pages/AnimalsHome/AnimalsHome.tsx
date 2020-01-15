@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { FaPlus as PlusIcon } from 'react-icons/fa'
 import InfiniteScroll from 'react-infinite-scroller'
-import { Link } from 'react-router-dom'
 import Animal from '../../../../../../model/Animal'
 import AnimalThumbnail from '../../../AnimalThumbnail/AnimalThumbnail'
 import $ from './AnimalsHome.module.scss'
@@ -40,15 +38,11 @@ export default () => {
         loadMore={fetchMoreAnimals}
         hasMore={true}
         loader={<div className={$.loader} key='loader'>Loading...</div>}
+        useWindow={false}
+        getScrollParent={() => document.getElementsByTagName('main')[0]}
       >
         {animals.map(animal => <AnimalThumbnail animal={animal} key={animal._id!} />)}
       </InfiniteScroll>
-
-      <div className={$.menu}>
-        <Link to='/animals/new'>
-          <PlusIcon />
-        </Link>
-      </div>
     </div>
   )
 }
