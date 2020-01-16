@@ -14,6 +14,11 @@
 .imageSection {
   flex: 1 1 19.6em;
   margin-right: 0.5em;
+
+  img {
+    max-width: 19.6em;
+    max-height: 19.6em;
+  }
 }
 
 .mainSection {

@@ -1,14 +1,14 @@
 import React from 'react'
 import { FaEnvelope as ContactUsIcon, FaHandsHelping as MembersIcon, FaInfoCircle as AboutUsIcon, FaSearch as ExploreIcon } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { $t } from '../../services/i18n'
 import $ from './NavigationMenu.module.scss'
 
 export default () => (
   <div className={$.container}>
-    <Link to='/'><ExploreIcon /><span>{$t('navigation.explore')}</span></Link>
-    <Link to='/'><MembersIcon /><span>{$t('navigation.members')}</span></Link>
-    <Link to='/'><ContactUsIcon /><span>{$t('navigation.contact')}</span></Link>
-    <Link to='/'><AboutUsIcon /><span>{$t('navigation.about')}</span></Link>
+    <NavLink to='/animals' activeClassName='active'><ExploreIcon /><span>{$t('navigation.explore')}</span></NavLink>
+    <NavLink to='/members' activeClassName='active'><MembersIcon /><span>{$t('navigation.members')}</span></NavLink>
+    <NavLink to='/contact' activeClassName='active'><ContactUsIcon /><span>{$t('navigation.contact')}</span></NavLink>
+    <NavLink to='/about' activeClassName='active'><AboutUsIcon /><span>{$t('navigation.about')}</span></NavLink>
   </div>
 )

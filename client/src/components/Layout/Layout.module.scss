@@ -23,7 +23,7 @@ $desktop-nav-width: 13em;
 
   & > header {
     grid-area: header;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid $color-borders;
   }
 
   & > nav {

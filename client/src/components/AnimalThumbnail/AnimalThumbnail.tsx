@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Animal from '../../../../model/Animal'
 import $ from './AnimalThumbnail.module.scss'
 
@@ -7,8 +8,7 @@ type Props = {
 }
 
 export default ({ animal }: Props) => (
-  <div className={$.container}>
-    <img src={animal.image} alt={animal.name} />
-    <label>{animal.name}</label>
-  </div>
+  <Link to={`/animals/${animal._id}`}>
+    <img className={$.image} src={animal.image} alt={animal.name} />
+  </Link>
 )

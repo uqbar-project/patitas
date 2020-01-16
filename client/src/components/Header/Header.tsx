@@ -4,7 +4,7 @@ import $ from './Header.module.scss'
 
 export default () => (
   <div className={$.container} >
-    <img src='logo.png' alt={$t('organization.name')} />
+    <img src='/logo.png' alt={$t('organization.name')} />
     <h1>{$t('organization.name')}</h1>
   </div>
 )

@@ -2,42 +2,36 @@ import React from 'react'
 import Root from 'react-div-100vh'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
-import AnimalForm from './components/AnimalForm/AnimalForm'
-import Layout from './components/Layout/Layout'
-import AnimalsHome from './components/pages/pages/AnimalsHome/AnimalsHome'
+import { ToastProvider } from 'react-toast-notifications'
+import AnimalEdit from './components/pages/AnimalEdit/AnimalEdit'
+import AnimalsHome from './components/pages/AnimalsHome/AnimalsHome'
 import './index.scss'
+import * as backend from './services/backend'
 import * as i18n from './services/i18n'
 import * as serviceWorker from './serviceWorker'
 
-const animal = {
-  _id: '1',
-  name: `patan`,
-  species: 'dog',
-  // gender: 'M',
-  age: 22,
-  size: 'S',
-  info: 'he is an asshole',
-  image: 'http://1.bp.blogspot.com/-PQ-kJmbBuH8/VPvK0ZHfF_I/AAAAAAAAAgw/VCVTEYzMHEQ/s1600/Pier%2BNodoyuna%2By%2BPatan%2Bcon%2Bsus%2BMaquinas%2BVoladoras2.jpg',
-} as const
+const SERVER_URL = process.env.SERVER_URL ?? 'http://localhost:8080'
 
 const routes = (
   <Switch>
     <Redirect exact from='/' to='/animals' />
-    <Route exact path='/animals'><Layout><AnimalsHome /></Layout></Route>
-    <Route exact path='/animal'><Layout><AnimalForm animal={animal} /></Layout></Route>
-    <Redirect to='/' />
+    <Route exact path='/animals'><AnimalsHome /></Route>
+    <Route exact path='/animals/:id'><AnimalEdit /></Route>
   </Switch >
 )
 
 const app = (
-  <Root>
-    <Router>{routes}</Router>
-  </Root>
+  <ToastProvider>
+    <Root>
+      <Router>{routes}</Router>
+    </Root>
+  </ToastProvider>
 )
 
 const launch = async () => {
   await Promise.all([
     i18n.init(),
+    backend.init(SERVER_URL),
   ])
 
   ReactDOM.render(app, document.getElementById('root'))

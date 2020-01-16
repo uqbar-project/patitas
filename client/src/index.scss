@@ -50,8 +50,11 @@ textarea {
   }
 }
 
-input:read-only,
-textarea:read-only {
+textarea {
+  height: 10ex;
+}
+
+input:read-only {
   background-color: transparent;
   padding-left: 0;
 
@@ -62,6 +65,9 @@ textarea:read-only {
   }
 }
 
-textarea {
-  height: 10ex;
+a.active,
+a.active * {
+  color: $color-primary;
+  fill: $color-primary;
+  font-weight: bold;
 }

@@ -1,14 +1,13 @@
 @import "../../theme";
 
-.container {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  width: 33%;
-  height: 33%;
+.image {
+  width: 9em;
+  max-height: 9em;
+  object-fit: cover;
+  object-position: center;
 
   @include tablet {
-    width: 20%;
-    height: 20%;
+    width: 11em;
+    max-height: 11em;
   }
 }
