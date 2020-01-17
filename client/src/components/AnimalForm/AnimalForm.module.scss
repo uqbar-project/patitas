@@ -2,18 +2,24 @@
 
 .form {
   padding: 0.5em;
-  max-width: 60%;
   margin: 0 auto;
 
   display: flex;
   flex-wrap: wrap;
 
   background-color: $color-background-secondary;
+
+  @include desktop {
+    max-width: 60%;
+  }
 }
 
 .imageSection {
   flex: 1 1 19.6em;
-  margin-right: 0.5em;
+
+  @include tablet {
+    margin-right: 0.5em;
+  }
 
   img {
     max-width: 19.6em;
@@ -33,4 +39,29 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 0.5em;
+}
+
+.actions {
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  & > button {
+    margin-left: 0.5em;
+    padding: 0.5em;
+    width: 7em;
+
+    svg {
+      width: 1em;
+      height: 1em;
+    }
+
+    &:not([type="submit"]) {
+      display: none;
+
+      @include desktop {
+        display: unset;
+      }
+    }
+  }
 }

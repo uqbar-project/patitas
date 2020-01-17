@@ -7,14 +7,14 @@ import AnimalForm from '../../AnimalForm/AnimalForm'
 import Layout from '../../Layout/Layout'
 
 export default () => {
-  const [animal, setAnimal] = useState<Animal>()
+  const [animal, setAnimal] = useState<Partial<Animal>>()
   const { id } = useParams<{ id: string }>()
   const { addToast } = useToasts()
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await animalsBackend.read(id)
+        const { data } = id === 'new' ? { data: {} as Partial<Animal> } : await animalsBackend.read(id)
 
         setAnimal(data)
       } catch (error) {
@@ -26,7 +26,7 @@ export default () => {
   return (
     <Layout>
       {animal &&
-        <AnimalForm animal={animal} />
+        <AnimalForm animal={animal} edit={!animal._id} />
       }
     </Layout>
   )

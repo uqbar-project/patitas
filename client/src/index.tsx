@@ -1,6 +1,7 @@
 import React from 'react'
 import Root from 'react-div-100vh'
 import ReactDOM from 'react-dom'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { ToastProvider } from 'react-toast-notifications'
 import AnimalEdit from './components/pages/AnimalEdit/AnimalEdit'
@@ -10,7 +11,8 @@ import * as backend from './services/backend'
 import * as i18n from './services/i18n'
 import * as serviceWorker from './serviceWorker'
 
-const SERVER_URL = process.env.SERVER_URL ?? 'http://localhost:8080'
+// const SERVER_URL = process.env.REACT_APP_SERVER_URL ?? 'http://localhost:8080'
+const SERVER_URL = 'http://192.168.0.101:8080'
 
 const routes = (
   <Switch>

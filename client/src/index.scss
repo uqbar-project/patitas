@@ -30,6 +30,20 @@ label {
   font-weight: bold;
   margin-bottom: 0.2em;
   text-transform: capitalize;
+
+  &.error {
+    color: $color-error;
+    & > * {
+      color: $color-error;
+    }
+  }
+
+  & > p {
+    font-size: 0.9em;
+    font-style: italic;
+    font-weight: normal;
+    text-transform: initial;
+  }
 }
 
 h1 {
@@ -54,15 +68,9 @@ textarea {
   height: 10ex;
 }
 
-input:read-only {
-  background-color: transparent;
-  padding-left: 0;
-
-  &:focus,
-  &:hover {
-    outline: none;
-    cursor: default;
-  }
+button:focus {
+  outline: none;
+  cursor: pointer;
 }
 
 a.active,

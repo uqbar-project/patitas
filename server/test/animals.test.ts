@@ -1,8 +1,9 @@
-import { should } from 'chai'
-import { describe, it } from 'mocha'
 import axios from 'axios'
-import Animal from '../../model/Animal'
+import { should } from 'chai'
 import faker from 'faker'
+import { describe, it } from 'mocha'
+import Animal from '../../model/Animal'
+import { GENDERS, SIZES, SPECIES } from '../../model/Animal'
 import * as dbHandler from './test-db-handler'
 
 const instance = axios.create({ baseURL: 'http://localhost:8080' })
@@ -16,13 +17,13 @@ should()
 const createAnimal = (delta: Partial<Animal>): Animal => {
   return {
     name: faker.name.findName(),
-    species: faker.random.arrayElement(['dog', 'cat']),
-    gender: faker.random.arrayElement(['M', 'F']),
+    species: faker.random.arrayElement(SPECIES),
+    gender: faker.random.arrayElement(GENDERS),
     age: faker.random.number(99),
-    size: faker.random.arrayElement(['S', 'M', 'L']),
+    size: faker.random.arrayElement(SIZES),
     info: faker.lorem.sentence(),
     image: faker.image.imageUrl(),
-    ...delta
+    ...delta,
   }
 }
 const createMultipleAnimals = (n: number): Animal[] => Array.from({ length: n }, (_, _i) => createAnimal({}))

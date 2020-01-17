@@ -17,4 +17,14 @@ export const animals = {
     return axios.get<Animal[]>(`${SERVER_URL}/animals`, { params })
   },
 
+  async upsert(animal: Partial<Animal>) {
+    const value = {
+      ...animal,
+      age: animal?.age && Number(animal?.age),
+    }
+    return value._id
+      ? axios.put(`${SERVER_URL}/animals/${value._id}`, value)
+      : axios.post(`${SERVER_URL}/animals`, value)
+  },
+
 }

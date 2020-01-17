@@ -2,6 +2,18 @@
   "organization": {
     "name": "Red PATITAS"
   },
+  "actions": {
+    "save": "guardar",
+    "cancel": "cancelar"
+  },
+  "errors": {
+    "mandatory": "este campo es obligatorio",
+    "invalid": "valor invalido",
+    "unknown": "campo no soportado"
+  },
+  "messages": {
+    "successfulCreation": "Creado con éxito!"
+  },
   "navigation": {
     "explore": "explorar",
     "members": "la red",

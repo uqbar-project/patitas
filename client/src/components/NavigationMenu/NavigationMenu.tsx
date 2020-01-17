@@ -6,9 +6,9 @@ import $ from './NavigationMenu.module.scss'
 
 export default () => (
   <div className={$.container}>
-    <NavLink to='/animals' activeClassName='active'><ExploreIcon /><span>{$t('navigation.explore')}</span></NavLink>
-    <NavLink to='/members' activeClassName='active'><MembersIcon /><span>{$t('navigation.members')}</span></NavLink>
-    <NavLink to='/contact' activeClassName='active'><ContactUsIcon /><span>{$t('navigation.contact')}</span></NavLink>
-    <NavLink to='/about' activeClassName='active'><AboutUsIcon /><span>{$t('navigation.about')}</span></NavLink>
+    <NavLink to='/animals' exact activeClassName='active'><ExploreIcon /><span>{$t('navigation.explore')}</span></NavLink>
+    <NavLink to='/members' exact activeClassName='active'><MembersIcon /><span>{$t('navigation.members')}</span></NavLink>
+    <NavLink to='/contact' exact activeClassName='active'><ContactUsIcon /><span>{$t('navigation.contact')}</span></NavLink>
+    <NavLink to='/about' exact activeClassName='active'><AboutUsIcon /><span>{$t('navigation.about')}</span></NavLink>
   </div>
 )

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { FaPlus as AddIcon } from 'react-icons/fa'
 import InfiniteScroll from 'react-infinite-scroller'
+import { Link } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import Animal from '../../../../../model/Animal'
 import { animals as animalsBackend } from '../../../services/backend'
-import AnimalThumbnail from '../../AnimalThumbnail/AnimalThumbnail'
 import Layout from '../../Layout/Layout'
 import $ from './AnimalsHome.module.scss'
 
@@ -43,8 +44,13 @@ export default () => {
         useWindow={false}
         getScrollParent={getMainTag}
       >
-        {animals.map(animal => <AnimalThumbnail animal={animal} key={animal._id!} />)}
+        {animals.map(animal => (
+          <Link to={`/animals/${animal._id}`} key={animal._id!}>
+            <img className={$.image} src={animal.image} alt={animal.name} />
+          </Link>
+        ))}
       </InfiniteScroll>
+      <Link className={$.floating} to='/animals/new'><AddIcon /></Link>
     </Layout>
   )
 }

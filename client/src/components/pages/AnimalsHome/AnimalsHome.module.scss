@@ -1,10 +1,49 @@
+@import "../../../theme";
+
 .list {
   display: flex;
   flex-wrap: wrap;
+
+  img {
+    width: 7em;
+    max-height: 7em;
+    object-fit: cover;
+    object-position: center;
+
+    @include tablet {
+      width: 11em;
+      max-height: 11em;
+    }
+  }
 }
 
 .loader {
   width: 100%;
   text-align: center;
   margin-top: 10px;
+}
+
+.floating {
+  font-size: 1.3rem;
+
+  position: absolute;
+  bottom: 3em;
+  right: 1em;
+
+  @include desktop {
+    right: calc(100vw - #{$threshold-desktop});
+  }
+
+  display: flex;
+  width: 2.5em;
+  height: 2.5em;
+
+  border: none;
+  border-radius: 50%;
+  background: $color-primary;
+
+  & > svg {
+    fill: $color-secondary;
+    margin: auto;
+  }
 }
