@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "license": "ISC",
   "scripts": {
-    "start": "ts-node-dev --respawn $npm_package_main",
+    "start": "DOTENV_CONFIG_PATH='../.env' ts-node-dev -r dotenv/config --respawn $npm_package_main",
     "build": "rm -rf ./build && mkdir ./build && tsc --outDir ./build",
     "test": "mocha -t 60000 --exit -r ts-node/register test/**/*.test.ts"
   },
