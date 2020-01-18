@@ -10,10 +10,10 @@ declare global {
 }
 
 export let client: MongoClient
-export default (connectionString: string, databaseName: string): RequestHandler => async (req, _res, next) => {
+export default (connectionString: string): RequestHandler => async (req, _res, next) => {
   try {
     client = client || await MongoClient.connect(connectionString, { useNewUrlParser: true })
-    req.db = client.db(databaseName)
+    req.db = client.db()
     next()
   } catch (error) {
     next(error)
