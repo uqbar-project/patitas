@@ -1,5 +1,7 @@
 import axios from 'axios'
+import chai from 'chai'
 import { should } from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 import faker from 'faker'
 import { describe, it } from 'mocha'
 import Animal from '../../model/Animal'
@@ -13,7 +15,9 @@ afterEach(dbHandler.clearDatabase)
 after(dbHandler.disconnect)
 
 should()
+chai.use(chaiAsPromised)
 
+const fakeId = () => faker.random.alphaNumeric(12)
 const createAnimal = (delta: Partial<Animal>): Animal => {
   return {
     name: faker.name.findName(),
@@ -35,6 +39,8 @@ const withoutId = (obj: { _id?: string }) => {
 
 describe('Animals API', () => {
   const SUCCESS = 200
+  const NOT_FOUND_MESSAGE = 'Request failed with status code 404'
+
   describe('List', () => {
     describe('Basic correct responses', () => {
       it('Should return a list including animals in the db', async () => {
@@ -110,6 +116,22 @@ describe('Animals API', () => {
       })
     })
 
+  })
+  describe('Get by id', () => {
+    it('Should return the animal if one exists with that id', async () => {
+      const animal = createAnimal({})
+      await dbHandler.save<Animal>('animals')(animal)
+
+      const getAllResponse = await instance.get<Animal[]>('/animals')
+      const animalWithId = getAllResponse.data[0]
+
+      const response = await instance.get<Animal>(`/animals/${animalWithId._id}`)
+      response.data.should.be.deep.equal(animalWithId)
+    })
+    it('Should fail with 404 if one does not exist with that id', async () => {
+      instance.get<Animal>(`/animals/${fakeId()}`)
+        .should.be.rejectedWith(NOT_FOUND_MESSAGE)
+    })
   })
   describe('Post', () => {
     it('Should create a new animal in the db when data is correct', async () => {
