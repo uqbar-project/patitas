@@ -39,7 +39,9 @@ const withoutId = (obj: { _id?: string }) => {
 
 describe('Animals API', () => {
   const SUCCESS = 200
-  const NOT_FOUND_MESSAGE = 'Request failed with status code 404'
+  const NOT_FOUND = 404
+  const BAD_REQUEST = 400
+  const failedRequestMessage = (statusCode: number) => `Request failed with status code ${statusCode.toString()}`
 
   describe('List', () => {
     describe('Basic correct responses', () => {
@@ -130,16 +132,29 @@ describe('Animals API', () => {
     })
     it('Should fail with 404 if one does not exist with that id', async () => {
       instance.get<Animal>(`/animals/${fakeId()}`)
-        .should.be.rejectedWith(NOT_FOUND_MESSAGE)
+        .should.be.rejectedWith(failedRequestMessage(NOT_FOUND))
     })
   })
   describe('Post', () => {
     it('Should create a new animal in the db when data is correct', async () => {
-      const animal = createAnimal({ name: 'pupi' })
+      const animal = createAnimal({})
       await instance.post<Animal>('/animals', animal)
       const response = await instance.get<Animal[]>('/animals')
       withoutId(response.data[0]).should.be.deep.equal(animal)
     })
+    describe('Validation failures', () => {
+      it('Should not create a new animal without a name', async () => {
+        const animal = createAnimal({ name: undefined })
+        instance.post('/animals', animal)
+          .should.be.rejectedWith(failedRequestMessage(BAD_REQUEST))
+      })
+      it('Should not create a new animal with an invalid species', async () => {
+        const animal = createAnimal({})
+        instance.post('/animals', { ...animal, gender: 'N' })
+          .should.be.rejectedWith(failedRequestMessage(BAD_REQUEST))
+      })
+    })
+
   })
 
 })
