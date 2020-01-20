@@ -19,7 +19,7 @@ export default () => {
     try {
       const { data } = await animalsBackend.list({
         start: (page - 1) * PAGE_SIZE,
-        limit: page * PAGE_SIZE,
+        limit: PAGE_SIZE,
       })
 
       setAnimals([...animals, ...data])
