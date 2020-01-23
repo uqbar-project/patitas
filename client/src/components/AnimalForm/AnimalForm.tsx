@@ -78,90 +78,93 @@ export default ({ animal, edit = false }: Props) => {
   const onCancel = () => history.push('/animals')
 
   return (
-    <form className={$.form}>
+    <div className={$.container}>
 
-      <div className={$.imageSection}>
-        <Field label={`${$t('animal.image')}*`} error={errors.image}>
-          <ImageChooser onImageSelected={onImageChange} />
-        </Field>
-      </div>
+      <form className={$.form}>
 
-      <div className={$.mainSection}>
-
-        <Field label={`${$t('animal.name')}*`} error={errors.name}>
-          {edit
-            ? <input value={value.name} onChange={update('name')} />
-            : <div>{value.name}</div>
-          }
-        </Field>
-
-        <Field label={`${$t('animal.species.label')}*`} error={errors.species}>
-          {edit
-            ? (
-              <select value={value.species} onChange={update('species')}>
-                <option />
-                <option value='dog'>{$t('animal.species.dog')}</option>
-                <option value='cat'>{$t('animal.species.cat')}</option>
-              </select>
-            ) : <div>{$t(`animal.species.${value.species}`)}</div>
-          }
-        </Field>
-
-        <Field label={`${$t('animal.gender.label')}*`} error={errors.gender}>
-          {edit
-            ? (
-              <select disabled={!edit} value={value.gender} onChange={update('gender')}>
-                <option />
-                <option value='M'>{$t('animal.gender.M')}</option>
-                <option value='F'>{$t('animal.gender.F')}</option>
-              </select>
-            )
-            : <div>{$t(`animal.gender.${value.gender}`)}</div>
-          }
-        </Field>
-
-        <Field label={`${$t('animal.age')}*`} error={errors.age}>
-          {edit
-            ? <input type='number' min={0} max={99} value={value.age} onChange={update('age')} />
-            : <div>{value.age}</div>
-          }
-        </Field>
-
-        <Field label={`${$t('animal.size.label')}*`} error={errors.size}>
-          {edit
-            ? (
-              <select disabled={!edit} value={value.size} onChange={update('size')}>
-                <option />
-                <option value='S'>{$t('animal.size.S')}</option>
-                <option value='M'>{$t('animal.size.M')}</option>
-                <option value='L'>{$t('animal.size.L')}</option>
-              </select>
-            ) : <div>{$t(`animal.size.${value.size}`)}</div>
-          }
-        </Field>
-      </div>
-
-      <div className={$.infoSection}>
-        <Field label={$t('animal.info')} error={errors.info}>
-          {edit
-            ? <textarea value={value.info} onChange={update('info')} />
-            : <div>{value.info}</div>
-          }
-        </Field>
-      </div>
-
-      {edit && (
-        <div className={$.actions}>
-          <button onClick={onCancel}>{$t('actions.cancel')}</button>
-          <button onClick={onSubmit} disabled={submitting} type='submit'>
-            {submitting
-              ? <Loader type='TailSpin' color='#00000099' />
-              : $t('actions.save')
-            }
-          </button>
+        <div className={$.imageSection}>
+          <Field label={`${$t('animal.image')}*`} error={errors.image}>
+            <ImageChooser onImageSelected={onImageChange} />
+          </Field>
         </div>
-      )}
 
-    </form>
+        <div className={$.mainSection}>
+
+          <Field label={`${$t('animal.name')}*`} error={errors.name}>
+            {edit
+              ? <input value={value.name} onChange={update('name')} />
+              : <div>{value.name}</div>
+            }
+          </Field>
+
+          <Field label={`${$t('animal.species.label')}*`} error={errors.species}>
+            {edit
+              ? (
+                <select value={value.species} onChange={update('species')}>
+                  <option />
+                  <option value='dog'>{$t('animal.species.dog')}</option>
+                  <option value='cat'>{$t('animal.species.cat')}</option>
+                </select>
+              ) : <div>{$t(`animal.species.${value.species}`)}</div>
+            }
+          </Field>
+
+          <Field label={`${$t('animal.gender.label')}*`} error={errors.gender}>
+            {edit
+              ? (
+                <select disabled={!edit} value={value.gender} onChange={update('gender')}>
+                  <option />
+                  <option value='M'>{$t('animal.gender.M')}</option>
+                  <option value='F'>{$t('animal.gender.F')}</option>
+                </select>
+              )
+              : <div>{$t(`animal.gender.${value.gender}`)}</div>
+            }
+          </Field>
+
+          <Field label={`${$t('animal.age')}*`} error={errors.age}>
+            {edit
+              ? <input type='number' min={0} max={99} value={value.age} onChange={update('age')} />
+              : <div>{value.age}</div>
+            }
+          </Field>
+
+          <Field label={`${$t('animal.size.label')}*`} error={errors.size}>
+            {edit
+              ? (
+                <select disabled={!edit} value={value.size} onChange={update('size')}>
+                  <option />
+                  <option value='S'>{$t('animal.size.S')}</option>
+                  <option value='M'>{$t('animal.size.M')}</option>
+                  <option value='L'>{$t('animal.size.L')}</option>
+                </select>
+              ) : <div>{$t(`animal.size.${value.size}`)}</div>
+            }
+          </Field>
+        </div>
+
+        <div className={$.infoSection}>
+          <Field label={$t('animal.info')} error={errors.info}>
+            {edit
+              ? <textarea value={value.info} onChange={update('info')} />
+              : <div>{value.info}</div>
+            }
+          </Field>
+        </div>
+
+        {edit && (
+          <div className={$.actions}>
+            <button onClick={onCancel}>{$t('actions.cancel')}</button>
+            <button onClick={onSubmit} disabled={submitting} type='submit'>
+              {submitting
+                ? <Loader type='TailSpin' color='#00000099' />
+                : $t('actions.save')
+              }
+            </button>
+          </div>
+        )}
+
+      </form>
+    </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { ChangeEvent, MouseEvent, useState } from 'react'
 import { FaImage as ImageIcon } from 'react-icons/fa'
 import ReactCrop, { Crop } from 'react-image-crop'
+import { $t } from '../../services/i18n'
 import $ from './ImageChooser.module.scss'
 
 
@@ -79,8 +80,8 @@ export default ({ onImageSelected }: Props) => {
               />
             </div>
             <div className={$.cropActions}>
-              <button onClick={onCancel}>cancelar</button>
-              <button type='submit' onClick={onAccept}>Aceptar</button>
+              <button onClick={onCancel}>{$t('actions.cancel')}</button>
+              <button type='submit' onClick={onAccept}>{$t('actions.accept')}</button>
             </div>
           </>
         ) : (

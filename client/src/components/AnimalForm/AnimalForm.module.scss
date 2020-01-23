@@ -1,14 +1,21 @@
 @import "../../theme";
 
+.container {
+  background: url("/ingreso.svg") no-repeat 95%;
+  background-size: auto 90%;
+  width: 100%;
+}
+
 .form {
   padding: 0.5em;
-  margin: 0 auto;
+  margin: 1em;
+  background-color: $color-background;
 
   display: flex;
   flex-wrap: wrap;
 
   @include desktop {
-    max-width: 60%;
+    max-width: 45vw;
   }
 }
 
@@ -31,7 +38,6 @@
 .field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 0.5em;
 }
 
 .actions {
