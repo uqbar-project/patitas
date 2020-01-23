@@ -7,6 +7,23 @@ export const init = async (serverURL: string) => {
   SERVER_URL = serverURL
 }
 
+export const images = {
+
+  async insert(image: Blob) {
+    const formData = new FormData()
+    formData.append('file', image)
+
+    const { data } = await axios.post(`${SERVER_URL}/images`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+    return data
+  },
+
+}
+
 export const animals = {
 
   async read(id: string) {

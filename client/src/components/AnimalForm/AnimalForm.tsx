@@ -1,11 +1,11 @@
-import axios from 'axios'
-import React, { ChangeEvent, FormEvent, MouseEvent, ReactNode, useState } from 'react'
+import React, { ChangeEvent, FormEvent, ReactNode, useState } from 'react'
 import Loader from 'react-loader-spinner'
 import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import Animal from '../../../../model/Animal'
-import { animals as animalsBackend } from '../../services/backend'
+import { animals as animalsBackend, images as imagesBackend } from '../../services/backend'
 import { $t } from '../../services/i18n'
+import ImageChooser from '../ImageChooser/ImageChooser'
 import $ from './AnimalForm.module.scss'
 
 type Props = {
@@ -34,11 +34,11 @@ export default ({ animal, edit = false }: Props) => {
   const history = useHistory()
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
+  const [image, setImage] = useState<Blob>()
   const [value, setValue] = useState({
     name: '',
     age: 0,
     info: '',
-    image: '',
     ...animal,
   })
 
@@ -46,32 +46,9 @@ export default ({ animal, edit = false }: Props) => {
     setValue({ ...value, [key]: event.target.value })
   }
 
-  const SERVER_URL = 'http://localhost:8080';
-  (window as any).cloudinary.setCloudName('redpatitas')
-  const myWidget = (window as any).cloudinary.createUploadWidget({
-    folder: 'refugio 1',
-    apiKey: '459452352698934',
-    maxImageWidth: 300,
-    maxImageHeight: 300,
-    multiple: false,
-    cropping: true,
-    showSkipCropButton: false,
-    croppingAspectRatio: 1,
-    croppingValidateDimensions: true,
-    resourceType: 'image',
-    showUploadMoreButton: false,
-    uploadSignature: async (callback: (s: string) => void, params: {}) => {
-      const response = await axios.post<string>(`${SERVER_URL}/sign`, params)
-      callback(response.data)
-    },
-  }, (error: any, result: any) => {
-    if (error) addToast(error.message, { appearance: 'error' })
-    else setValue({ ...value, image: result.url })
-  })
-
-  const onSelectImage = (e: MouseEvent) => {
-    e.preventDefault()
-    myWidget.open()
+  const onImageChange = (blob: Blob) => {
+    setImage(blob)
+    setValue({ ...value, image: undefined })
   }
 
   const onSubmit = async (event: FormEvent) => {
@@ -80,8 +57,16 @@ export default ({ animal, edit = false }: Props) => {
     setSubmitting(true)
 
     try {
+      if (image && !value.image) {
+        const { link } = await imagesBackend.insert(image)
+        value.image = link
+        setValue(value)
+      }
+
       await animalsBackend.upsert(value)
+
       history.push('/animals')
+
       addToast($t('messages.successfulCreation'), { appearance: 'success', autoDismiss: true })
     } catch (error) {
       setErrors(error.response.data)
@@ -95,11 +80,9 @@ export default ({ animal, edit = false }: Props) => {
   return (
     <form className={$.form}>
 
-      <button onClick={onSelectImage}>SUBITE</button>
       <div className={$.imageSection}>
         <Field label={`${$t('animal.image')}*`} error={errors.image}>
-          <img src={value.image} alt={$t('animal.image')} />
-          {edit && <input value={value.image} onChange={update('image')} />}
+          <ImageChooser onImageSelected={onImageChange} />
         </Field>
       </div>
 

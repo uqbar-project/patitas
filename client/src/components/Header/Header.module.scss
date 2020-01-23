@@ -1,8 +1,11 @@
+@import "../../theme";
+
 .container {
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0.2em;
+  padding-left: 4.75em;
+  color: $color-font-highlight;
 
   img {
     width: 2.8em;

@@ -1,0 +1,53 @@
+@import "../../theme";
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.cropContainer {
+  width: 100%;
+  height: auto;
+  background-color: #dddddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-roundness;
+  overflow: hidden;
+}
+
+.cropActions {
+  display: flex;
+
+  button {
+    flex: 1 1 50%;
+    margin-top: 0.5em;
+
+    &:first-child {
+      margin-right: 0.5em;
+    }
+  }
+}
+
+.input {
+  cursor: pointer;
+  width: 100%;
+
+  img {
+    width: 100%;
+    border-radius: $border-roundness;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    font-size: 20em;
+    background-color: #dddddd;
+    padding: 25%;
+    border-radius: $border-roundness;
+  }
+
+  & > input[type="file"] {
+    display: none;
+  }
+}

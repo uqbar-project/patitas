@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
-import Footer from '../Footer/Footer'
-import Header from '../Header/Header'
-import NavigationMenu from '../NavigationMenu/NavigationMenu'
+import Footer from '../../Footer/Footer'
+import NavigationMenu from '../../NavigationMenu/NavigationMenu'
+import Header from '../Header'
 import $ from './Layout.module.scss'
 
 type Props = {

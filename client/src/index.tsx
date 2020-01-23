@@ -1,6 +1,7 @@
 import React from 'react'
 import Root from 'react-div-100vh'
 import ReactDOM from 'react-dom'
+import 'react-image-crop/dist/ReactCrop.css'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { ToastProvider } from 'react-toast-notifications'
@@ -11,8 +12,18 @@ import * as backend from './services/backend'
 import * as i18n from './services/i18n'
 import * as serviceWorker from './serviceWorker'
 
-// const SERVER_URL = process.env.REACT_APP_SERVER_URL ?? 'http://localhost:8080'
-const SERVER_URL = 'http://192.168.0.101:8080'
+const { info } = console
+
+const environmentVariable = (name: string): string => {
+  const value = process.env[name]
+  if (!value) throw new Error(`Missing required environment variable ${name}`)
+  info(`Using environment variable ${name}=${value}`)
+  return value
+}
+
+const SERVER_URL = environmentVariable('REACT_APP_SERVER_URL')
+const SERVER_PORT = environmentVariable('REACT_APP_SERVER_PORT')
+const SERVER = `${SERVER_URL}:${SERVER_PORT}`
 
 const routes = (
   <Switch>
@@ -33,7 +44,7 @@ const app = (
 const launch = async () => {
   await Promise.all([
     i18n.init(),
-    backend.init(SERVER_URL),
+    backend.init(SERVER),
   ])
 
   ReactDOM.render(app, document.getElementById('root'))

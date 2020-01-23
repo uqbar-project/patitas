@@ -1,14 +1,16 @@
 $color-primary: rgb(255, 88, 55);
 $color-secondary: rgb(255, 255, 255);
+$color-highlight: rgb(83, 109, 254);
 $color-error: rgb(255, 50, 50);
-$color-borders: rgb(221, 221, 221);
-$color-background-primary: rgb(255, 255, 255);
-$color-background-secondary: rgb(255, 204, 128);
+$color-background: rgb(255, 255, 255);
+$color-shadow: rgba(237, 100, 69, 0.07);
 $color-font-default: rgba(0, 0, 0, 0.6);
-$color-font-highlight: rgb(226, 129, 78);
+$color-font-highlight: rgb(96, 125, 139);
 
-$font-default: 16px Raleway, Arial, sans-serif;
+$font-default: 16px Poppins, Arial, sans-serif;
 $font-logo: bold 22px Nunito, Arial, sans-serif;
+
+$border-roundness: 6px;
 
 $threshold-tablet: 768px;
 @mixin tablet {

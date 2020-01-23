@@ -1,18 +1,50 @@
 @import "../../../theme";
 
+$border-roundness: 6px;
+
 .list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  @include tablet {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  padding: 1em;
+}
+
+.thumbnail {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+
+  cursor: pointer;
+  border-radius: $border-roundness;
+  background-color: $color-background;
+  box-shadow: 0 1px 3px 0 $color-shadow, 0 2px 1px 0 $color-shadow, 0 1px 1px 0 $color-shadow;
 
   img {
-    width: 7em;
-    max-height: 7em;
-    object-fit: cover;
-    object-position: center;
+    border-radius: $border-roundness $border-roundness 0 0;
+  }
 
-    @include tablet {
-      width: 11em;
-      max-height: 11em;
+  & > div {
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 1.2em;
+
+    p {
+      color: $color-highlight;
+      font-weight: bold;
+      text-transform: capitalize;
     }
   }
 }

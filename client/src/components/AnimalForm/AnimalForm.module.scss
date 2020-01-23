@@ -7,8 +7,6 @@
   display: flex;
   flex-wrap: wrap;
 
-  background-color: $color-background-secondary;
-
   @include desktop {
     max-width: 60%;
   }
@@ -19,11 +17,6 @@
 
   @include tablet {
     margin-right: 0.5em;
-  }
-
-  img {
-    max-width: 19.6em;
-    max-height: 19.6em;
   }
 }
 
