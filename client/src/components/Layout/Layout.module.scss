@@ -23,12 +23,13 @@
 
   header {
     grid-area: header;
-    background-color: $color-background;
+    background-color: $color-background-default;
     box-shadow: 0 2px 3px 0 $color-shadow, 0 2px 7px 0 $color-shadow, 0 4px 5px 0 $color-shadow;
   }
 
   nav {
     grid-area: menu;
+    background-color: $color-background-default;
 
     @include desktop {
       display: none;
@@ -44,6 +45,11 @@
   }
 
   footer {
-    background-color: $color-background;
+    display: none;
+
+    @include tablet {
+      background-color: $color-background-default;
+      display: unset;
+    }
   }
 }

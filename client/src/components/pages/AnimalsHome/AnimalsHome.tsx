@@ -9,7 +9,7 @@ import { animals as animalsBackend } from '../../../services/backend'
 import Layout from '../../Layout/Layout'
 import $ from './AnimalsHome.module.scss'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 12
 
 type AnimalThumbnailProps = {
   animal: Animal

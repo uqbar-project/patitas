@@ -12,8 +12,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: $border-roundness;
+  border-radius: $border-roundness-default;
   overflow: hidden;
+
+  img {
+    max-height: 11em;
+  }
 }
 
 .cropActions {
@@ -35,16 +39,18 @@
 
   img {
     width: 100%;
-    border-radius: $border-roundness;
+    border-radius: $border-roundness-default;
+    border: 1px solid $color-border;
   }
 
   svg {
     width: 100%;
     height: auto;
     font-size: 20em;
-    background-color: #dddddd;
     padding: 25%;
-    border-radius: $border-roundness;
+    fill: $color-highlight;
+    border-radius: $border-roundness-default;
+    border: 1px solid $color-border;
   }
 
   & > input[type="file"] {

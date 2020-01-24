@@ -1,6 +1,6 @@
 @import "../../../theme";
 
-$border-roundness: 6px;
+$border-roundness-default: 6px;
 
 .list {
   display: grid;
@@ -25,12 +25,14 @@ $border-roundness: 6px;
   justify-content: space-between;
 
   cursor: pointer;
-  border-radius: $border-roundness;
-  background-color: $color-background;
+  border-radius: $border-roundness-default;
+  background-color: $color-background-default;
   box-shadow: 0 1px 3px 0 $color-shadow, 0 2px 1px 0 $color-shadow, 0 1px 1px 0 $color-shadow;
 
   img {
-    border-radius: $border-roundness $border-roundness 0 0;
+    border-radius: $border-roundness-default $border-roundness-default 0 0;
+    width: 100%;
+    height: 100%;
   }
 
   & > div {
@@ -63,7 +65,8 @@ $border-roundness: 6px;
   right: 1em;
 
   @include desktop {
-    right: calc(100vw - #{$threshold-desktop});
+    right: 1.5em;
+    bottom: 5em;
   }
 
   display: flex;

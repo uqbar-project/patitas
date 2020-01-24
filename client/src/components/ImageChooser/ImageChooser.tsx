@@ -1,18 +1,19 @@
 import React, { ChangeEvent, MouseEvent, useState } from 'react'
-import { FaImage as ImageIcon } from 'react-icons/fa'
+import { FaPlusCircle as AddImageIcon } from 'react-icons/fa'
 import ReactCrop, { Crop } from 'react-image-crop'
 import { $t } from '../../services/i18n'
 import $ from './ImageChooser.module.scss'
 
 
 type Props = {
+  currentImage?: string
   onImageSelected: (blob: Blob) => void
 }
 
-export default ({ onImageSelected }: Props) => {
+export default ({ currentImage, onImageSelected }: Props) => {
   const [imageData, setImageData] = useState()
   const [imageElement, setImageElement] = useState()
-  const [croppedImageURL, setCroppedImageURL] = useState()
+  const [croppedImageURL, setCroppedImageURL] = useState(currentImage)
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
     width: 50,
@@ -20,7 +21,7 @@ export default ({ onImageSelected }: Props) => {
     aspect: 1,
   })
 
-  const getCroppedImg = async (image: HTMLImageElement) => {
+  const getCroppedImg = async (image: HTMLImageElement): Promise<string> => {
     const canvas = document.createElement('canvas')
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
@@ -33,9 +34,6 @@ export default ({ onImageSelected }: Props) => {
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (!blob) return reject(new Error('Canvas is empty'))
-        // TODO:
-        // window.URL.revokeObjectURL(this.fileUrl)
-        // this.fileUrl = window.URL.createObjectURL(blob)
         onImageSelected(blob)
         const fileUrl = window.URL.createObjectURL(blob)
         resolve(fileUrl)
@@ -60,6 +58,7 @@ export default ({ onImageSelected }: Props) => {
     event.preventDefault()
     if (imageElement && crop.width && crop.height) {
       const cropped = await getCroppedImg(imageElement)
+      if (croppedImageURL) window.URL.revokeObjectURL(croppedImageURL)
       setCroppedImageURL(cropped)
     }
     setImageData(null)
@@ -88,7 +87,7 @@ export default ({ onImageSelected }: Props) => {
           <label className={$.input}>
             {croppedImageURL
               ? <img alt='image' src={croppedImageURL} />
-              : <ImageIcon />
+              : <AddImageIcon />
             }
             <input type='file' accept='image/*' onChange={onSelectFile} />
           </label>

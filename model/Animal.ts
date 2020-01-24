@@ -23,10 +23,10 @@ export const validate = (obj: any) => {
   for (const key in obj) { if (!allKeys.includes(key)) problems[key] = 'unknown' }
   for (const key of allKeys) { if (!keys(obj).includes(key)) problems[key] = `mandatory` }
 
-  if (!obj.name) problems.name = 'mandatory'
+  if (!obj.name || !obj.name.trim().length) problems.name = 'mandatory'
   if (!SPECIES.includes(obj.species)) problems.species = 'invalid'
   if (!GENDERS.includes(obj.gender)) problems.gender = 'invalid'
-  if (!obj.age || typeof obj.age !== 'number' || isNaN(obj.age)) problems.age = 'invalid'
+  if (obj.age === undefined || typeof obj.age !== 'number' || isNaN(obj.age)) problems.age = 'invalid'
   if (!SIZES.includes(obj.size)) problems.size = 'invalid'
   if (!obj.info && obj.info !== '') problems.info = 'invalid'
   if (!obj.image) problems.image = 'mandatory'

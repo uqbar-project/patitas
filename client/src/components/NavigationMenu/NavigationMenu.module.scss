@@ -22,6 +22,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    color: $color-font-highlight;
 
     @include desktop {
       flex-direction: row;

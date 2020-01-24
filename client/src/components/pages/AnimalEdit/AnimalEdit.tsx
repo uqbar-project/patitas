@@ -21,12 +21,12 @@ export default () => {
         addToast(error.message, { appearance: 'error' })
       }
     })()
-  }, [id, addToast])
+  }, [])
 
   return (
     <Layout>
       {animal &&
-        <AnimalForm animal={animal} edit={!animal._id} />
+        <AnimalForm animal={animal} edit />
       }
     </Layout>
   )
