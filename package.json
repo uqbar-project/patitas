@@ -13,11 +13,11 @@
     "start": "env-cmd npm run start:${NODE_ENV:=development}",
     "start:production": "node ./server/build/server/src/index.js",
     "start:development": "npm-run-all --parallel start:development:client start:development:server",
-    "start:development:client": "FORCE_COLOR=true npm start --prefix client/ | cat",
+    "start:development:client": "PORT=3000 REACT_APP_SERVER_URL=http://127.0.0.1:8080 FORCE_COLOR=true npm start --prefix client/ | cat",
     "start:development:server": "npm start --prefix server/",
     "build": "npm-run-all --sequential build:server build:client",
     "build:client": "npm run build --prefix client/",
-    "build:server": "npm run build --prefix server/"
+    "build:server": "NODE_ENV=development npm run build --prefix server/"
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.3",
