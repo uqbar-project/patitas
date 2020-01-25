@@ -4,7 +4,7 @@
   "description": "",
   "license": "ISC",
   "scripts": {
-    "postinstall": "npm-run-all --parallel install:client install:server",
+    "install": "npm-run-all --parallel install:client install:server",
     "install:client": "npm install --prefix client/",
     "install:server": "npm install --prefix server/",
     "test": "npm-run-all --sequential test:client test:server",
@@ -15,7 +15,7 @@
     "start:development": "npm-run-all --parallel start:development:client start:development:server",
     "start:development:client": "PORT=3000 REACT_APP_SERVER_URL=http://127.0.0.1:8080 FORCE_COLOR=true npm start --prefix client/ | cat",
     "start:development:server": "npm start --prefix server/",
-    "build": "npm-run-all --sequential build:server build:client",
+    "build": "npm-run-all --parallel build:server build:client",
     "build:client": "npm run build --prefix client/",
     "build:server": "NODE_ENV=development npm run build --prefix server/"
   },
