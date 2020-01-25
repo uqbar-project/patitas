@@ -20,7 +20,7 @@ export const validate = (obj: any) => {
 
   const problems: Record<string, string> = {}
 
-  for (const key in obj) { if (!allKeys.includes(key)) problems[key] = 'unknown' }
+  for (const key in obj) { if (!allKeys.includes(key) && key !== '_id') problems[key] = 'unknown' }
   for (const key of allKeys) { if (!keys(obj).includes(key)) problems[key] = `mandatory` }
 
   if (!obj.name || !obj.name.trim().length) problems.name = 'mandatory'
