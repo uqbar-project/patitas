@@ -15,7 +15,7 @@
     "start:development": "npm-run-all --parallel start:development:client start:development:server",
     "start:development:client": "FORCE_COLOR=true npm start --prefix client/ | cat",
     "start:development:server": "npm start --prefix server/",
-    "build": "npm-run-all --parallel build:client build:server",
+    "build": "npm-run-all --sequential build:server build:client",
     "build:client": "npm run build --prefix client/",
     "build:server": "npm run build --prefix server/"
   },
