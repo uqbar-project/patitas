@@ -14,14 +14,8 @@ import * as serviceWorker from './serviceWorker'
 
 const { info } = console
 
-const environmentVariable = (name: string): string => {
-  const value = process.env[name]
-  if (!value) throw new Error(`Missing required environment variable ${name}`)
-  info(`Using environment variable ${name}=${value}`)
-  return value
-}
-
-const SERVER_URL = environmentVariable('REACT_APP_SERVER_URL')
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || ''
+info(`Using environment variable REACT_APP_SERVER=${SERVER_URL}`)
 
 const routes = (
   <Switch>
