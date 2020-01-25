@@ -10,7 +10,7 @@ const environmentVariable = (name: string): string => {
 }
 
 const NODE_ENV = environmentVariable('NODE_ENV')
-const PORT = environmentVariable('REACT_APP_SERVER_PORT')
+const PORT = environmentVariable('PORT')
 const MONGO_CONNECTION_STRING = environmentVariable('MONGO_CONNECTION_STRING')
 const IMGUR_CLIENT_ID = environmentVariable('IMGUR_CLIENT_ID')
 

@@ -11,6 +11,7 @@
     "test:client": "npm test --prefix client/",
     "test:server": "npm test --prefix server/",
     "start": "env-cmd npm run start:${NODE_ENV:=development}",
+    "start:production": "node ./server/build/server/src/index.js",
     "start:development": "npm-run-all --parallel start:development:client start:development:server",
     "start:development:client": "FORCE_COLOR=true npm start --prefix client/ | cat",
     "start:development:server": "npm start --prefix server/",

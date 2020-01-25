@@ -6,6 +6,8 @@ import { animals as animalsBackend } from '../../../services/backend'
 import AnimalForm from '../../AnimalForm/AnimalForm'
 import Layout from '../../Layout/Layout'
 
+const { log } = console
+
 export default () => {
   const [animal, setAnimal] = useState<Partial<Animal>>()
   const { id } = useParams<{ id: string }>()
@@ -18,6 +20,7 @@ export default () => {
 
         setAnimal(data)
       } catch (error) {
+        log(error)
         addToast(error.message, { appearance: 'error' })
       }
     })()

@@ -22,8 +22,6 @@ const environmentVariable = (name: string): string => {
 }
 
 const SERVER_URL = environmentVariable('REACT_APP_SERVER_URL')
-const SERVER_PORT = environmentVariable('REACT_APP_SERVER_PORT')
-const SERVER = `${SERVER_URL}:${SERVER_PORT}`
 
 const routes = (
   <Switch>
@@ -44,7 +42,7 @@ const app = (
 const launch = async () => {
   await Promise.all([
     i18n.init(),
-    backend.init(SERVER),
+    backend.init(SERVER_URL),
   ])
 
   ReactDOM.render(app, document.getElementById('root'))

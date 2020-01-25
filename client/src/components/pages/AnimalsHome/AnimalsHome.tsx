@@ -9,6 +9,8 @@ import { animals as animalsBackend } from '../../../services/backend'
 import Layout from '../../Layout/Layout'
 import $ from './AnimalsHome.module.scss'
 
+const { log } = console
+
 const PAGE_SIZE = 12
 
 type AnimalThumbnailProps = {
@@ -46,6 +48,7 @@ export default () => {
       setHasMore(data.length === PAGE_SIZE)
 
     } catch (error) {
+      log(error)
       addToast(error.message, { appearance: 'error' })
       setHasMore(false)
     }

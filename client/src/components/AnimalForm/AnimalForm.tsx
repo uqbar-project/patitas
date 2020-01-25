@@ -8,6 +8,8 @@ import { $t } from '../../services/i18n'
 import ImageChooser from '../ImageChooser/ImageChooser'
 import $ from './AnimalForm.module.scss'
 
+const { log } = console
+
 type Props = {
   animal: Partial<Animal>
   edit?: boolean
@@ -73,6 +75,7 @@ export default ({ animal, edit = false }: Props) => {
 
       addToast($t('messages.successfulCreation'), { appearance: 'success', autoDismiss: true })
     } catch (error) {
+      log(error)
       if (error?.response?.data) setErrors(error.response.data)
       else addToast(error.message, { appearance: 'error' })
     }
