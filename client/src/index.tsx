@@ -8,14 +8,8 @@ import { ToastProvider } from 'react-toast-notifications'
 import AnimalEdit from './components/pages/AnimalEdit/AnimalEdit'
 import AnimalsHome from './components/pages/AnimalsHome/AnimalsHome'
 import './index.scss'
-import * as backend from './services/backend'
 import * as i18n from './services/i18n'
 import * as serviceWorker from './serviceWorker'
-
-const { info } = console
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL || ''
-info(`Using environment variable REACT_APP_SERVER=${SERVER_URL}`)
 
 const routes = (
   <Switch>
@@ -36,7 +30,6 @@ const app = (
 const launch = async () => {
   await Promise.all([
     i18n.init(),
-    backend.init(SERVER_URL),
   ])
 
   ReactDOM.render(app, document.getElementById('root'))
