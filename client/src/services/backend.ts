@@ -1,10 +1,10 @@
 import axios from 'axios'
 import Animal from '../../../model/Animal'
 
-let SERVER_URL: string
+let SERVER_URL: string = ''
 
 export const init = async (serverURL: string) => {
-  SERVER_URL = serverURL
+  if (false) SERVER_URL = serverURL
 }
 
 export const images = {
