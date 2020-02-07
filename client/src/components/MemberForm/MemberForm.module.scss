@@ -3,26 +3,20 @@
 .form {
   grid-template-areas:
     "name"
-    "image"
-    "age"
-    "species"
-    "gender"
-    "size"
-    "info"
+    "logo"
     "actions";
 
   @include tablet {
     grid-template-areas:
-      "name    age"
-      "image   species"
-      "image   gender"
-      "image   size"
-      "info    info"
+      "name    name"
+      "logo    ."
+      "logo    ."
+      "logo    ."
       "actions actions";
   }
 }
 
-.image {
+.logo {
   padding-bottom: 0;
   padding-left: 0;
   padding-right: 0;

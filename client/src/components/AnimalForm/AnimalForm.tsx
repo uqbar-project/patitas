@@ -1,10 +1,11 @@
-import React, { ChangeEvent, FormEvent, ReactNode, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import Loader from 'react-loader-spinner'
 import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import Animal from '../../../../model/Animal'
 import { animals as animalsBackend, images as imagesBackend } from '../../services/backend'
 import { $t } from '../../services/i18n'
+import { Field } from '../Form/Form'
 import ImageChooser from '../ImageChooser/ImageChooser'
 import $ from './AnimalForm.module.scss'
 
@@ -14,21 +15,6 @@ type Props = {
   animal: Partial<Animal>
   edit?: boolean
 }
-
-type FieldProps = {
-  id: string
-  label: string
-  error?: string
-  children: ReactNode | ReactNode[]
-}
-
-const Field = ({ id, label, error, children }: FieldProps) => (
-  <div id={id} className={`${$.field} ${error && $.error}`}>
-    <label>{label}</label>
-    {error && <p>{$t(`errors.${error}`)}</p>}
-    {children}
-  </div>
-)
 
 export default ({ animal, edit = false }: Props) => {
   const { addToast } = useToasts()
@@ -86,90 +72,87 @@ export default ({ animal, edit = false }: Props) => {
   const onCancel = () => history.push('/animals')
 
   return (
-    <div className={$.container}>
+    <form className={$.form}>
 
-      <form className={$.form}>
-
-        <Field id={$.image} label={`${$t('animal.image')}*`} error={errors.image}>
-          {edit
-            ? <ImageChooser onImageSelected={onImageChange} currentImage={value.image} />
-            : <img src={value.image} />
-          }
-        </Field>
+      <Field name='image' className={$.image} label={`${$t('animal.image')}*`} error={errors.image}>
+        {edit
+          ? <ImageChooser onImageSelected={onImageChange} currentImage={value.image} />
+          : <img src={value.image} />
+        }
+      </Field>
 
 
-        <Field id={$.name} label={`${$t('animal.name')}*`} error={errors.name}>
-          {edit
-            ? <input value={value.name} onChange={update('name')} onFocus={cleanError('name')} />
-            : <div>{value.name}</div>
-          }
-        </Field>
+      <Field name='name' label={`${$t('animal.name')}*`} error={errors.name}>
+        {edit
+          ? <input value={value.name} onChange={update('name')} onFocus={cleanError('name')} />
+          : <div>{value.name}</div>
+        }
+      </Field>
 
-        <Field id={$.species} label={`${$t('animal.species.label')}*`} error={errors.species}>
-          {edit
-            ? (
-              <select value={value.species} onChange={update('species')} onFocus={cleanError('species')}>
-                <option />
-                <option value='dog'>{$t('animal.species.dog')}</option>
-                <option value='cat'>{$t('animal.species.cat')}</option>
-              </select>
-            ) : <div>{$t(`animal.species.${value.species}`)}</div>
-          }
-        </Field>
+      <Field name='species' label={`${$t('animal.species.label')}*`} error={errors.species}>
+        {edit
+          ? (
+            <select value={value.species} onChange={update('species')} onFocus={cleanError('species')}>
+              <option />
+              <option value='dog'>{$t('animal.species.dog')}</option>
+              <option value='cat'>{$t('animal.species.cat')}</option>
+            </select>
+          ) : <div>{$t(`animal.species.${value.species}`)}</div>
+        }
+      </Field>
 
-        <Field id={$.gender} label={`${$t('animal.gender.label')}*`} error={errors.gender}>
-          {edit
-            ? (
-              <select disabled={!edit} value={value.gender} onChange={update('gender')} onFocus={cleanError('gender')}>
-                <option />
-                <option value='M'>{$t('animal.gender.M')}</option>
-                <option value='F'>{$t('animal.gender.F')}</option>
-              </select>
-            )
-            : <div>{$t(`animal.gender.${value.gender}`)}</div>
-          }
-        </Field>
+      <Field name='gender' label={`${$t('animal.gender.label')}*`} error={errors.gender}>
+        {edit
+          ? (
+            <select disabled={!edit} value={value.gender} onChange={update('gender')} onFocus={cleanError('gender')}>
+              <option />
+              <option value='M'>{$t('animal.gender.M')}</option>
+              <option value='F'>{$t('animal.gender.F')}</option>
+            </select>
+          )
+          : <div>{$t(`animal.gender.${value.gender}`)}</div>
+        }
+      </Field>
 
-        <Field id={$.age} label={`${$t('animal.age')}*`} error={errors.age}>
-          {edit
-            ? <input type='number' min={0} max={99} value={value.age} onChange={update('age')} onFocus={cleanError('age')} />
-            : <div>{value.age}</div>
-          }
-        </Field>
+      <Field name='age' label={`${$t('animal.age')}*`} error={errors.age}>
+        {edit
+          ? <input type='number' min={0} max={99} value={value.age} onChange={update('age')} onFocus={cleanError('age')} />
+          : <div>{value.age}</div>
+        }
+      </Field>
 
-        <Field id={$.size} label={`${$t('animal.size.label')}*`} error={errors.size}>
-          {edit
-            ? (
-              <select disabled={!edit} value={value.size} onChange={update('size')} onFocus={cleanError('size')}>
-                <option />
-                <option value='S'>{$t('animal.size.S')}</option>
-                <option value='M'>{$t('animal.size.M')}</option>
-                <option value='L'>{$t('animal.size.L')}</option>
-              </select>
-            ) : <div>{$t(`animal.size.${value.size}`)}</div>
-          }
-        </Field>
+      <Field name='size' label={`${$t('animal.size.label')}*`} error={errors.size}>
+        {edit
+          ? (
+            <select disabled={!edit} value={value.size} onChange={update('size')} onFocus={cleanError('size')}>
+              <option />
+              <option value='S'>{$t('animal.size.S')}</option>
+              <option value='M'>{$t('animal.size.M')}</option>
+              <option value='L'>{$t('animal.size.L')}</option>
+            </select>
+          ) : <div>{$t(`animal.size.${value.size}`)}</div>
+        }
+      </Field>
 
-        <Field id={$.info} label={$t('animal.info')} error={errors.info}>
-          {edit
-            ? <textarea value={value.info} onChange={update('info')} onFocus={cleanError('info')} />
-            : <div>{value.info}</div>
-          }
-        </Field>
+      <Field name='info' label={$t('animal.info')} error={errors.info}>
+        {edit
+          ? <textarea value={value.info} onChange={update('info')} onFocus={cleanError('info')} />
+          : <div>{value.info}</div>
+        }
+      </Field>
 
-        {edit && (
-          <div id={$.actions}>
-            <button onClick={onCancel}>{$t('actions.cancel')}</button>
-            <button onClick={onSubmit} disabled={submitting} type='submit'>
-              {submitting
-                ? <Loader type='TailSpin' color='#00000099' />
-                : $t('actions.save')
-              }
-            </button>
-          </div>
-        )}
+      {edit && (
+        <div className='actions'>
+          <button onClick={onCancel}>{$t('actions.cancel')}</button>
+          <button onClick={onSubmit} disabled={submitting} type='submit'>
+            {submitting
+              ? <Loader type='TailSpin' color='#00000099' />
+              : $t('actions.save')
+            }
+          </button>
+        </div>
+      )}
 
-      </form>
-    </div>
+    </form>
   )
 }

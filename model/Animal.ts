@@ -4,13 +4,17 @@ export const SPECIES = ['dog', 'cat'] as const
 export const GENDERS = ['M', 'F'] as const
 export const SIZES = ['S', 'M', 'L'] as const
 
+export type Species = typeof SPECIES[number]
+export type Gender = typeof GENDERS[number]
+export type Size = typeof SIZES[number]
+
 export default interface Animal {
   readonly _id?: string
   readonly name: string
-  readonly species: typeof SPECIES[number]
-  readonly gender: typeof GENDERS[number]
+  readonly species: Species
+  readonly gender: Gender
   readonly age: number
-  readonly size: typeof SIZES[number]
+  readonly size: Size
   readonly info: string
   readonly image: string
 }

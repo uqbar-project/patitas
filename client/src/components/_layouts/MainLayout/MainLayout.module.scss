@@ -1,4 +1,4 @@
-@import "../../theme";
+@import "../../../theme";
 
 .layout {
   height: 100%;
@@ -17,8 +17,8 @@
     grid-template-columns: auto;
     grid-template-rows: 5.5em calc(100% - 5.5em);
     grid-template-areas:
-      "header"
-      "main";
+      "header menu"
+      "main   main";
   }
 
   header {
@@ -30,10 +30,6 @@
   nav {
     grid-area: menu;
     background-color: $color-background-default;
-
-    @include desktop {
-      display: none;
-    }
   }
 
   main {

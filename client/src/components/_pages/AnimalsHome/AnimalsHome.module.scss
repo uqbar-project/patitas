@@ -1,0 +1,27 @@
+@import "../../../theme";
+
+.floating {
+  font-size: 1.3rem;
+
+  position: absolute;
+  bottom: 3em;
+  right: 1em;
+
+  @include desktop {
+    right: 1.5em;
+    bottom: 5em;
+  }
+
+  display: flex;
+  width: 2.5em;
+  height: 2.5em;
+
+  border: none;
+  border-radius: 50%;
+  background: $color-primary;
+
+  & > svg {
+    fill: $color-secondary;
+    margin: auto;
+  }
+}

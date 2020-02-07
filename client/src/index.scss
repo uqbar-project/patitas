@@ -46,6 +46,38 @@ h1 {
   text-transform: capitalize;
 }
 
+form {
+  padding: 3.5em;
+
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: 100%;
+
+  @include tablet {
+    grid-template-columns: 50% 50%;
+  }
+
+  .actions {
+    grid-area: actions;
+    display: flex;
+
+    & > button {
+      flex: 1 1;
+      padding: 0.5em;
+
+      svg {
+        width: 1em;
+        height: 1em;
+        fill: $color-secondary;
+      }
+
+      &:not(:last-child) {
+        margin-right: 0.5em;
+      }
+    }
+  }
+}
+
 input,
 select,
 textarea {
