@@ -1,11 +1,24 @@
 import { AsyncRouter } from 'express-async-router'
+import multer from 'multer'
 import Animals from './controllers/Animals'
 
 const router = AsyncRouter()
+const upload = multer()
 
 router.get('/ping', async () => 'OK')
 
-router.post('/sign', async ({ body, media }) => media.sign(body))
+// ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+// IMAGES
+// ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+router.post('/images', upload.single('file'), async ({ media, file }, res) => {
+  try {
+    return media.createImage(file)
+  } catch (error) {
+    res.status(400)
+    return error
+  }
+})
 
 // ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // ANIMALS
