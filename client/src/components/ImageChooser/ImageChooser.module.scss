@@ -1,0 +1,59 @@
+@import "../../theme";
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.cropContainer {
+  width: 100%;
+  height: auto;
+  background-color: #dddddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-roundness-default;
+  overflow: hidden;
+
+  img {
+    max-height: 11em;
+  }
+}
+
+.cropActions {
+  display: flex;
+
+  button {
+    flex: 1 1 50%;
+    margin-top: 0.5em;
+
+    &:first-child {
+      margin-right: 0.5em;
+    }
+  }
+}
+
+.input {
+  cursor: pointer;
+  width: 100%;
+
+  img {
+    width: 100%;
+    border-radius: $border-roundness-default;
+    border: 1px solid $color-border;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    font-size: 20em;
+    padding: 25%;
+    fill: $color-highlight;
+    border-radius: $border-roundness-default;
+    border: 1px solid $color-border;
+  }
+
+  & > input[type="file"] {
+    display: none;
+  }
+}

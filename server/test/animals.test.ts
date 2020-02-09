@@ -8,7 +8,8 @@ import Animal from '../../model/Animal'
 import { GENDERS, SIZES, SPECIES } from '../../model/Animal'
 import * as dbHandler from './test-db-handler'
 
-const instance = axios.create({ baseURL: 'http://localhost:8080' })
+
+const instance = axios.create({ baseURL: `http://localhost:${dbHandler.TEST_SERVER_PORT}/api` })
 
 before(dbHandler.connect)
 afterEach(dbHandler.clearDatabase)

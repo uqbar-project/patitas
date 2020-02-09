@@ -3,6 +3,7 @@
 html {
   box-sizing: border-box;
   font: $font-default;
+  color: $color-font-default;
 }
 
 body,
@@ -17,7 +18,7 @@ body,
   font: inherit;
   margin: 0;
   padding: 0;
-  color: $color-font-default;
+  color: inherit;
 }
 
 img {
@@ -30,13 +31,7 @@ label {
   font-weight: bold;
   margin-bottom: 0.2em;
   text-transform: capitalize;
-
-  &.error {
-    color: $color-error;
-    & > * {
-      color: $color-error;
-    }
-  }
+  color: $color-font-label;
 
   & > p {
     font-size: 0.9em;
@@ -54,23 +49,38 @@ h1 {
 input,
 select,
 textarea {
-  height: 2em;
-  background-color: $color-background-primary;
-  padding: 0.2em;
+  height: 1.75em;
+  width: 100%;
+  color: $color-font-highlight;
+  background-color: transparent;
   border: none;
 
   &:focus {
-    outline: solid 2px $color-primary;
+    outline: none;
   }
 }
 
 textarea {
   height: 10ex;
+  resize: none;
+  overflow: hidden;
 }
 
-button:focus {
-  outline: none;
+button {
+  height: 3rem;
+  border-radius: $border-roundness-default;
+  box-shadow: 0 2px 2px 0 $color-shadow;
+  text-shadow: 0 1px 0 $color-shadow;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
   cursor: pointer;
+
+  &[type="submit"] {
+    color: $color-secondary;
+    background-color: $color-highlight;
+    box-shadow: 0 2px 2px 0 rgba(83, 109, 254, 0.25);
+  }
 }
 
 a.active,

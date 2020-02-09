@@ -1,8 +1,10 @@
 {
   "organization": {
-    "name": "Red PATITAS"
+    "name": "Red PATITAS",
+    "copyright": "2019 Red PATITAS | Todos los derechos reservados. Conectando Familias"
   },
   "actions": {
+    "accept": "aceptar",
     "save": "guardar",
     "cancel": "cancelar"
   },

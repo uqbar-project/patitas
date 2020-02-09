@@ -1,14 +1,36 @@
 import React, { useState } from 'react'
 import { FaPlus as AddIcon } from 'react-icons/fa'
+import { FaMars as MaleIcon, FaVenus as FemaleIcon } from 'react-icons/fa'
 import InfiniteScroll from 'react-infinite-scroller'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import Animal from '../../../../../model/Animal'
 import { animals as animalsBackend } from '../../../services/backend'
 import Layout from '../../Layout/Layout'
 import $ from './AnimalsHome.module.scss'
 
-const PAGE_SIZE = 10
+const { log } = console
+
+const PAGE_SIZE = 12
+
+type AnimalThumbnailProps = {
+  animal: Animal
+}
+const AnimalThumbnail = ({ animal }: AnimalThumbnailProps) => {
+  const history = useHistory()
+  const onClick = () => { history.push(`/animals/${animal._id}`) }
+
+  return (
+    <div className={$.thumbnail} onClick={onClick}>
+      <img className={$.image} src={animal.image} alt={animal.name} />
+      <div>
+        <p>{animal.name}</p>
+        {animal.gender === 'M' ? <MaleIcon fill='lightblue' /> : <FemaleIcon fill='lightpink' />}
+      </div>
+    </div>
+  )
+}
+
 
 export default () => {
   const [animals, setAnimals] = useState<Animal[]>([])
@@ -26,6 +48,7 @@ export default () => {
       setHasMore(data.length === PAGE_SIZE)
 
     } catch (error) {
+      log(error)
       addToast(error.message, { appearance: 'error' })
       setHasMore(false)
     }
@@ -44,11 +67,7 @@ export default () => {
         useWindow={false}
         getScrollParent={getMainTag}
       >
-        {animals.map(animal => (
-          <Link to={`/animals/${animal._id}`} key={animal._id!}>
-            <img className={$.image} src={animal.image} alt={animal.name} />
-          </Link>
-        ))}
+        {animals.map(animal => <AnimalThumbnail key={animal._id} animal={animal} />)}
       </InfiniteScroll>
       <Link className={$.floating} to='/animals/new'><AddIcon /></Link>
     </Layout>

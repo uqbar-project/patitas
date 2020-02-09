@@ -1,12 +1,14 @@
-import axios from 'axios'
-import React, { ChangeEvent, FormEvent, MouseEvent, ReactNode, useState } from 'react'
+import React, { ChangeEvent, FormEvent, ReactNode, useState } from 'react'
 import Loader from 'react-loader-spinner'
 import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import Animal from '../../../../model/Animal'
-import { animals as animalsBackend } from '../../services/backend'
+import { animals as animalsBackend, images as imagesBackend } from '../../services/backend'
 import { $t } from '../../services/i18n'
+import ImageChooser from '../ImageChooser/ImageChooser'
 import $ from './AnimalForm.module.scss'
+
+const { log } = console
 
 type Props = {
   animal: Partial<Animal>
@@ -14,17 +16,16 @@ type Props = {
 }
 
 type FieldProps = {
+  id: string
   label: string
   error?: string
   children: ReactNode | ReactNode[]
 }
 
-const Field = ({ label, error, children }: FieldProps) => (
-  <div className={$.field}>
-    <label className={error && 'error'}>
-      {label}
-      <p>{error && $t(`errors.${error}`)}</p>
-    </label>
+const Field = ({ id, label, error, children }: FieldProps) => (
+  <div id={id} className={`${$.field} ${error && $.error}`}>
+    <label>{label}</label>
+    {error && <p>{$t(`errors.${error}`)}</p>}
     {children}
   </div>
 )
@@ -34,11 +35,11 @@ export default ({ animal, edit = false }: Props) => {
   const history = useHistory()
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
+  const [image, setImage] = useState<Blob>()
   const [value, setValue] = useState({
     name: '',
     age: 0,
     info: '',
-    image: '',
     ...animal,
   })
 
@@ -46,32 +47,14 @@ export default ({ animal, edit = false }: Props) => {
     setValue({ ...value, [key]: event.target.value })
   }
 
-  const SERVER_URL = 'http://localhost:8080';
-  (window as any).cloudinary.setCloudName('redpatitas')
-  const myWidget = (window as any).cloudinary.createUploadWidget({
-    folder: 'refugio 1',
-    apiKey: '459452352698934',
-    maxImageWidth: 300,
-    maxImageHeight: 300,
-    multiple: false,
-    cropping: true,
-    showSkipCropButton: false,
-    croppingAspectRatio: 1,
-    croppingValidateDimensions: true,
-    resourceType: 'image',
-    showUploadMoreButton: false,
-    uploadSignature: async (callback: (s: string) => void, params: {}) => {
-      const response = await axios.post<string>(`${SERVER_URL}/sign`, params)
-      callback(response.data)
-    },
-  }, (error: any, result: any) => {
-    if (error) addToast(error.message, { appearance: 'error' })
-    else setValue({ ...value, image: result.url })
-  })
+  const cleanError = (key: keyof Animal) => () => {
+    const { [key]: _, ...nextErrors } = errors
+    setErrors(nextErrors)
+  }
 
-  const onSelectImage = (e: MouseEvent) => {
-    e.preventDefault()
-    myWidget.open()
+  const onImageChange = (blob: Blob) => {
+    setImage(blob)
+    setValue({ ...value, image: undefined })
   }
 
   const onSubmit = async (event: FormEvent) => {
@@ -80,11 +63,21 @@ export default ({ animal, edit = false }: Props) => {
     setSubmitting(true)
 
     try {
+      if (image && !value.image) {
+        const { link } = await imagesBackend.insert(image)
+        value.image = link
+        setValue(value)
+      }
+
       await animalsBackend.upsert(value)
+
       history.push('/animals')
+
       addToast($t('messages.successfulCreation'), { appearance: 'success', autoDismiss: true })
     } catch (error) {
-      setErrors(error.response.data)
+      log(error)
+      if (error?.response?.data) setErrors(error.response.data)
+      else addToast(error.message, { appearance: 'error' })
     }
 
     setSubmitting(false)
@@ -93,29 +86,29 @@ export default ({ animal, edit = false }: Props) => {
   const onCancel = () => history.push('/animals')
 
   return (
-    <form className={$.form}>
+    <div className={$.container}>
 
-      <button onClick={onSelectImage}>SUBITE</button>
-      <div className={$.imageSection}>
-        <Field label={`${$t('animal.image')}*`} error={errors.image}>
-          <img src={value.image} alt={$t('animal.image')} />
-          {edit && <input value={value.image} onChange={update('image')} />}
-        </Field>
-      </div>
+      <form className={$.form}>
 
-      <div className={$.mainSection}>
-
-        <Field label={`${$t('animal.name')}*`} error={errors.name}>
+        <Field id={$.image} label={`${$t('animal.image')}*`} error={errors.image}>
           {edit
-            ? <input value={value.name} onChange={update('name')} />
+            ? <ImageChooser onImageSelected={onImageChange} currentImage={value.image} />
+            : <img src={value.image} />
+          }
+        </Field>
+
+
+        <Field id={$.name} label={`${$t('animal.name')}*`} error={errors.name}>
+          {edit
+            ? <input value={value.name} onChange={update('name')} onFocus={cleanError('name')} />
             : <div>{value.name}</div>
           }
         </Field>
 
-        <Field label={`${$t('animal.species.label')}*`} error={errors.species}>
+        <Field id={$.species} label={`${$t('animal.species.label')}*`} error={errors.species}>
           {edit
             ? (
-              <select value={value.species} onChange={update('species')}>
+              <select value={value.species} onChange={update('species')} onFocus={cleanError('species')}>
                 <option />
                 <option value='dog'>{$t('animal.species.dog')}</option>
                 <option value='cat'>{$t('animal.species.cat')}</option>
@@ -124,10 +117,10 @@ export default ({ animal, edit = false }: Props) => {
           }
         </Field>
 
-        <Field label={`${$t('animal.gender.label')}*`} error={errors.gender}>
+        <Field id={$.gender} label={`${$t('animal.gender.label')}*`} error={errors.gender}>
           {edit
             ? (
-              <select disabled={!edit} value={value.gender} onChange={update('gender')}>
+              <select disabled={!edit} value={value.gender} onChange={update('gender')} onFocus={cleanError('gender')}>
                 <option />
                 <option value='M'>{$t('animal.gender.M')}</option>
                 <option value='F'>{$t('animal.gender.F')}</option>
@@ -137,17 +130,17 @@ export default ({ animal, edit = false }: Props) => {
           }
         </Field>
 
-        <Field label={`${$t('animal.age')}*`} error={errors.age}>
+        <Field id={$.age} label={`${$t('animal.age')}*`} error={errors.age}>
           {edit
-            ? <input type='number' min={0} max={99} value={value.age} onChange={update('age')} />
+            ? <input type='number' min={0} max={99} value={value.age} onChange={update('age')} onFocus={cleanError('age')} />
             : <div>{value.age}</div>
           }
         </Field>
 
-        <Field label={`${$t('animal.size.label')}*`} error={errors.size}>
+        <Field id={$.size} label={`${$t('animal.size.label')}*`} error={errors.size}>
           {edit
             ? (
-              <select disabled={!edit} value={value.size} onChange={update('size')}>
+              <select disabled={!edit} value={value.size} onChange={update('size')} onFocus={cleanError('size')}>
                 <option />
                 <option value='S'>{$t('animal.size.S')}</option>
                 <option value='M'>{$t('animal.size.M')}</option>
@@ -156,29 +149,27 @@ export default ({ animal, edit = false }: Props) => {
             ) : <div>{$t(`animal.size.${value.size}`)}</div>
           }
         </Field>
-      </div>
 
-      <div className={$.infoSection}>
-        <Field label={$t('animal.info')} error={errors.info}>
+        <Field id={$.info} label={$t('animal.info')} error={errors.info}>
           {edit
-            ? <textarea value={value.info} onChange={update('info')} />
+            ? <textarea value={value.info} onChange={update('info')} onFocus={cleanError('info')} />
             : <div>{value.info}</div>
           }
         </Field>
-      </div>
 
-      {edit && (
-        <div className={$.actions}>
-          <button onClick={onCancel}>{$t('actions.cancel')}</button>
-          <button onClick={onSubmit} disabled={submitting} type='submit'>
-            {submitting
-              ? <Loader type='TailSpin' color='#00000099' />
-              : $t('actions.save')
-            }
-          </button>
-        </div>
-      )}
+        {edit && (
+          <div id={$.actions}>
+            <button onClick={onCancel}>{$t('actions.cancel')}</button>
+            <button onClick={onSubmit} disabled={submitting} type='submit'>
+              {submitting
+                ? <Loader type='TailSpin' color='#00000099' />
+                : $t('actions.save')
+              }
+            </button>
+          </div>
+        )}
 
-    </form>
+      </form>
+    </div>
   )
 }

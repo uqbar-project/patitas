@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
 import NavigationMenu from '../NavigationMenu/NavigationMenu'
 import $ from './Layout.module.scss'
@@ -19,7 +20,9 @@ export default ({ children }: Props) => (
 
     <main>
       {children}
-      <footer />
+      <footer>
+        <Footer />
+      </footer>
     </main>
 
   </div>
