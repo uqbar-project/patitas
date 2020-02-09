@@ -2,7 +2,7 @@ import { Db, MongoClient } from 'mongodb'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import server from '../src/server'
 
-const SERVER_PORT = 8080
+export const TEST_SERVER_PORT = 2020
 
 const mongoServer = new MongoMemoryServer()
 let mongoClient: MongoClient
@@ -13,7 +13,7 @@ const dropAllCollections = async () => await db.dropDatabase()
 export const connect = async () => {
   const connectionString = await mongoServer.getConnectionString()
   await new Promise(resolve =>
-    server(connectionString, '').listen(SERVER_PORT, resolve)
+    server(connectionString, '').listen(TEST_SERVER_PORT, resolve)
   )
   mongoClient = await MongoClient.connect(connectionString)
   db = mongoClient.db()
