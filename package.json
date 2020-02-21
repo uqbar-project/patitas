@@ -4,7 +4,7 @@
   "description": "",
   "license": "ISC",
   "scripts": {
-    "postinstall": "lerna bootstrap --hoist --strict",
+    "postinstall": "lerna bootstrap --strict",
     "start": "lerna run start --stream",
     "build": "lerna run build --stream",
     "watch": "lerna run watch --stream --parallel",
