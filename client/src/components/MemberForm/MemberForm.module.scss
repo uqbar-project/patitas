@@ -8,11 +8,12 @@
 
   @include tablet {
     grid-template-areas:
-      "name    name"
-      "logo    ."
-      "logo    ."
-      "logo    ."
-      "actions actions";
+      "name     name"
+      "logo     species"
+      "logo     province"
+      "logo     zone"
+      "homepage homepage"
+      "actions  actions";
   }
 }
 

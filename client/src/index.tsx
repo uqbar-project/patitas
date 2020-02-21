@@ -12,6 +12,8 @@ import MembersHome from './components/_pages/MembersHome/MembersHome'
 import './index.scss'
 import * as i18n from './services/i18n'
 import * as serviceWorker from './serviceWorker'
+import MembersEdit from './components/_pages/MembersEdit/MembersEdit'
+import Notification from './components/_pages/Notification/Notification'
 
 const routes = (
   <Switch>
@@ -19,7 +21,9 @@ const routes = (
     <Route exact path='/animals'><AnimalsHome /></Route>
     <Route exact path='/animals/:id'><AnimalEdit /></Route>
     <Route exact path='/members'><MembersHome /></Route>
+    <Route exact path='/members/new'><MembersEdit /></Route>
     <Route exact path='/contact'><Contact /></Route>
+    <Route exact path='/contact/submitted'><Notification id='contactSubmitted' /></Route>
   </Switch >
 )
 

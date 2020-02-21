@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
-import Animal from '../../../../../model/Animal'
+import { Animal } from '@patitas/model'
 import { animals as animalsBackend } from '../../../services/backend'
 import MainLayout from '../../_layouts/MainLayout/MainLayout'
 import SideLayout from '../../_layouts/SideLayout/SideLayout'
@@ -25,7 +25,7 @@ export default () => {
         addToast(error.message, { appearance: 'error' })
       }
     })()
-  }, [])
+  }, [addToast, id])
 
   return (
     <MainLayout>

@@ -1,6 +1,5 @@
 import { Db, ObjectId } from 'mongodb'
-import Animal from '../../../model/Animal'
-import { validate } from '../../../model/Animal'
+import { Animal, validateAnimal } from '@patitas/model'
 
 const { keys } = Object
 const collection = (db: Db) => db.collection<Animal>('animals')
@@ -19,7 +18,7 @@ export default (db: Db) => ({
   read: async (id: string) => collection(db).findOne(new ObjectId(id)),
 
   create: async (doc: Animal) => {
-    const problems = validate(doc)
+    const problems = validateAnimal(doc)
     if (keys(problems).length) throw problems
     collection(db).save(doc)
   },
@@ -32,7 +31,7 @@ export default (db: Db) => ({
     if (!current) throw new Error(`Unexistent animal ${id}`)
 
     const next = { ...current, ...delta }
-    const problems = validate(next)
+    const problems = validateAnimal(next)
     if (keys(problems).length) throw problems
 
     col.save(next)

@@ -8,7 +8,7 @@ export type Species = typeof SPECIES[number]
 export type Gender = typeof GENDERS[number]
 export type Size = typeof SIZES[number]
 
-export default interface Animal {
+export interface Animal {
   readonly _id?: string
   readonly name: string
   readonly species: Species
@@ -19,7 +19,7 @@ export default interface Animal {
   readonly image: string
 }
 
-export const validate = (obj: any) => {
+export const validateAnimal = (obj: any) => {
   const allKeys = ['name', 'species', 'gender', 'age', 'size', 'info', 'image'].sort()
 
   const problems: Record<string, string> = {}
@@ -33,6 +33,6 @@ export const validate = (obj: any) => {
   if (obj.age === undefined || typeof obj.age !== 'number' || isNaN(obj.age)) problems.age = 'invalid'
   if (!SIZES.includes(obj.size)) problems.size = 'invalid'
   if (!obj.info && obj.info !== '') problems.info = 'invalid'
-  if (!obj.image) problems.image = 'mandatory'
+  if (!obj.image || !obj.image.trim().length) problems.image = 'mandatory'
   return problems
 }

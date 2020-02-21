@@ -46,6 +46,13 @@ h1 {
   text-transform: capitalize;
 }
 
+h2 {
+  color: $color-font-label;
+  font-size: 2em;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
 form {
   padding: 3.5em;
 

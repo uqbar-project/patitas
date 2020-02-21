@@ -2,12 +2,12 @@ import React from 'react'
 import { FaPlus as AddIcon } from 'react-icons/fa'
 import { FaMars as MaleIcon, FaVenus as FemaleIcon } from 'react-icons/fa'
 import { Link, useHistory } from 'react-router-dom'
-import Animal from '../../../../../model/Animal'
 import { animals as animalsBackend } from '../../../services/backend'
 import MainLayout from '../../_layouts/MainLayout/MainLayout'
 import Thumbnail from '../../Thumbnail/Thumbnail'
 import ThumbnailList from '../../ThumbnailList/ThumbnailList'
 import $ from './AnimalsHome.module.scss'
+import { Animal } from '@patitas/model'
 
 
 export default () => {

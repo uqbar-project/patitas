@@ -2,12 +2,12 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 import Loader from 'react-loader-spinner'
 import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
-import Animal from '../../../../model/Animal'
 import { animals as animalsBackend, images as imagesBackend } from '../../services/backend'
 import { $t } from '../../services/i18n'
 import { Field } from '../Form/Form'
 import ImageChooser from '../ImageChooser/ImageChooser'
 import $ from './AnimalForm.module.scss'
+import { Animal, SIZES, GENDERS, SPECIES } from '@patitas/model/build/Animal'
 
 const { log } = console
 
@@ -77,7 +77,7 @@ export default ({ animal, edit = false }: Props) => {
       <Field name='image' className={$.image} label={`${$t('animal.image')}*`} error={errors.image}>
         {edit
           ? <ImageChooser onImageSelected={onImageChange} currentImage={value.image} />
-          : <img src={value.image} />
+          : <img src={value.image} alt={$t('animal.image')} />
         }
       </Field>
 
@@ -94,8 +94,7 @@ export default ({ animal, edit = false }: Props) => {
           ? (
             <select value={value.species} onChange={update('species')} onFocus={cleanError('species')}>
               <option />
-              <option value='dog'>{$t('animal.species.dog')}</option>
-              <option value='cat'>{$t('animal.species.cat')}</option>
+              {SPECIES.map(species => <option key={species} value={species}>{$t(`animal.species.${species}`)}</option>)}}
             </select>
           ) : <div>{$t(`animal.species.${value.species}`)}</div>
         }
@@ -106,8 +105,7 @@ export default ({ animal, edit = false }: Props) => {
           ? (
             <select disabled={!edit} value={value.gender} onChange={update('gender')} onFocus={cleanError('gender')}>
               <option />
-              <option value='M'>{$t('animal.gender.M')}</option>
-              <option value='F'>{$t('animal.gender.F')}</option>
+              {GENDERS.map(gender => <option key={gender} value={gender}>{$t(`animal.gender.${gender}`)}</option>)}
             </select>
           )
           : <div>{$t(`animal.gender.${value.gender}`)}</div>
@@ -126,9 +124,7 @@ export default ({ animal, edit = false }: Props) => {
           ? (
             <select disabled={!edit} value={value.size} onChange={update('size')} onFocus={cleanError('size')}>
               <option />
-              <option value='S'>{$t('animal.size.S')}</option>
-              <option value='M'>{$t('animal.size.M')}</option>
-              <option value='L'>{$t('animal.size.L')}</option>
+              {SIZES.map(size => <option key={size} value={size}>{$t(`animal.size.${size}`)}</option>)}
             </select>
           ) : <div>{$t(`animal.size.${value.size}`)}</div>
         }
@@ -143,7 +139,7 @@ export default ({ animal, edit = false }: Props) => {
 
       {edit && (
         <div className='actions'>
-          <button onClick={onCancel}>{$t('actions.cancel')}</button>
+          <button onClick={onCancel} disabled={submitting}>{$t('actions.cancel')}</button>
           <button onClick={onSubmit} disabled={submitting} type='submit'>
             {submitting
               ? <Loader type='TailSpin' color='#00000099' />

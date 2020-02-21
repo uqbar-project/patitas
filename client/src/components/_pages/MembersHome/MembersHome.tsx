@@ -1,9 +1,9 @@
 import React from 'react'
-import Member from '../../../../../model/Member'
 import { members as membersBackend } from '../../../services/backend'
 import MainLayout from '../../_layouts/MainLayout/MainLayout'
 import Thumbnail from '../../Thumbnail/Thumbnail'
 import ThumbnailList from '../../ThumbnailList/ThumbnailList'
+import { Member } from '@patitas/model/src/Member'
 
 
 export default () => {
@@ -13,7 +13,9 @@ export default () => {
     return data
   }
 
-  const onClick = (member: Member) => () => { window.location.href = member.contactPoints.find(_ => _.main)!.url }
+  const onClick = (member: Member) => () => {
+    window.location.href = member.homepage.startsWith('http') ? member.homepage : `http://${member.homepage}`
+  }
 
   return (
     <MainLayout>

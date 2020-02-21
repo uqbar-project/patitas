@@ -1,9 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./build"
+    "outDir": "./build",
+    "declarationMap": true
   },
   "include": [
-    "./src"
+    "./src/"
   ]
 }
