@@ -4,6 +4,10 @@
   grid-template-areas:
     "name"
     "logo"
+    "species"
+    "province"
+    "zone"
+    "homepage"
     "actions";
 
   @include tablet {
