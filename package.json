@@ -5,13 +5,15 @@
   "license": "ISC",
   "scripts": {
     "postinstall": "lerna bootstrap --hoist --strict",
-    "start": "npm start --prefix server",
+    "start": "lerna run start --stream",
     "build": "lerna run build --stream",
     "watch": "lerna run watch --stream --parallel",
     "test": "lerna run test"
   },
+  "dependencies": {
+    "lerna": "^3.20.2"
+  },
   "devDependencies": {
-    "lerna": "^3.20.2",
     "tslint": "^6.0.0",
     "typescript": "^3.7.5"
   }
