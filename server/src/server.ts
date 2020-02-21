@@ -1,5 +1,5 @@
-import { json } from 'body-parser'
 import cors from 'cors'
+import { json } from 'body-parser'
 import express from 'express'
 import { AsyncRouter } from 'express-async-router'
 import passport from 'passport'
