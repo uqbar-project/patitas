@@ -1,20 +1,33 @@
 import { Db, ObjectId } from 'mongodb'
 import Animal from '../../../model/Animal'
 import { validate } from '../../../model/Animal'
+import { urlToMongoFilter } from '../middleware/mongo'
 
 const { keys } = Object
 const collection = (db: Db) => db.collection<Animal>('animals')
 
-type ListOptions = { limit: number, start: number }
+type ListOptions = { limit: number, start: number, filter: any }
+type QueryFilter = {
+  [P in keyof Animal]?: any
+}
 
 export default (db: Db) => ({
 
-  list: async ({ limit, start }: ListOptions) =>
-    collection(db)
-      .find()
+  list: async ({ limit, start, filter }: ListOptions) => {
+    let queryFilter: QueryFilter = {}
+    for (const key in filter) {
+      console.log(`Filtering with ${key} -> ${filter[key]}`)
+      //      const [fieldName, operator] = key.split("$")
+      //      queryFilter[fieldName] = queryFilter[fieldName] || {}
+      //      queryFilter[fieldName][`${operator}`] = filter[key]
+      console.log(queryFilter)
+    }
+    return collection(db)
+      .find(urlToMongoFilter(filter))
       .limit(limit)
       .skip(start)
-      .toArray(),
+      .toArray()
+  },
 
   read: async (id: string) => collection(db).findOne(new ObjectId(id)),
 
