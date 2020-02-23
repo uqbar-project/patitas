@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
-import Animal from '../../../../../model/Animal'
+import { Animal } from '@patitas/model'
 import { animals as animalsBackend } from '../../../services/backend'
+import MainLayout from '../../_layouts/MainLayout/MainLayout'
+import SideLayout from '../../_layouts/SideLayout/SideLayout'
 import AnimalForm from '../../AnimalForm/AnimalForm'
-import Layout from '../../Layout/Layout'
 
 const { log } = console
 
@@ -24,13 +25,16 @@ export default () => {
         addToast(error.message, { appearance: 'error' })
       }
     })()
-  }, [])
+  }, [addToast, id])
 
   return (
-    <Layout>
-      {animal &&
-        <AnimalForm animal={animal} edit />
-      }
-    </Layout>
+    <MainLayout>
+      <SideLayout>
+        {animal
+          ? <AnimalForm animal={animal} edit />
+          : <span>Loading</span> // TODO:
+        }
+      </SideLayout>
+    </MainLayout>
   )
 }

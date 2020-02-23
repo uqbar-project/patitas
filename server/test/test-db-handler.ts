@@ -11,11 +11,18 @@ let db: Db
 const dropAllCollections = async () => await db.dropDatabase()
 
 export const connect = async () => {
-  const connectionString = await mongoServer.getConnectionString()
+  const MONGO_CONNECTION_STRING = await mongoServer.getConnectionString()
   await new Promise(resolve =>
-    server(connectionString, '').listen(TEST_SERVER_PORT, resolve)
+    server({
+      MONGO_CONNECTION_STRING,
+      IMGUR_CLIENT_ID: '',
+      GOOGLE_CLIENT_ID: 'test_id',
+      GOOGLE_CLIENT_SECRET: 'test_secret',
+      EMAIL_USER: '',
+      EMAIL_PASSWORD: '',
+    }).listen(TEST_SERVER_PORT, resolve)
   )
-  mongoClient = await MongoClient.connect(connectionString)
+  mongoClient = await MongoClient.connect(MONGO_CONNECTION_STRING)
   db = mongoClient.db()
 }
 

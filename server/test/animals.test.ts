@@ -4,8 +4,7 @@ import { should } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import faker from 'faker'
 import { describe, it } from 'mocha'
-import Animal from '../../model/Animal'
-import { GENDERS, SIZES, SPECIES } from '../../model/Animal'
+import { GENDERS, SIZES, SPECIES, Animal } from '@patitas/model'
 import * as dbHandler from './test-db-handler'
 
 

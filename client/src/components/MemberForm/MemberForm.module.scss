@@ -1,0 +1,56 @@
+@import "../../theme";
+
+.form {
+  grid-template-areas:
+    "name"
+    "logo"
+    "species"
+    "province"
+    "zone"
+    "homepage"
+    "actions";
+
+  @include tablet {
+    grid-template-areas:
+      "name     name"
+      "logo     species"
+      "logo     province"
+      "logo     zone"
+      "homepage homepage"
+      "actions  actions";
+  }
+}
+
+.logo {
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: none;
+
+  @include tablet {
+    max-width: 15.2em;
+  }
+
+  &:global(.error) {
+    background-color: $color-background-default;
+
+    & p {
+      z-index: 1000;
+      padding-left: 1em;
+    }
+
+    & svg {
+      background-color: $color-background-error;
+    }
+  }
+
+  & > img {
+    border-radius: $border-roundness-default;
+    border: 1px solid $color-border;
+    height: 100%;
+  }
+
+  & > label {
+    margin-left: 1.2em;
+  }
+}

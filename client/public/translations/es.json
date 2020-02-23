@@ -6,7 +6,8 @@
   "actions": {
     "accept": "aceptar",
     "save": "guardar",
-    "cancel": "cancelar"
+    "cancel": "cancelar",
+    "approve": "aprobar"
   },
   "errors": {
     "mandatory": "este campo es obligatorio",
@@ -42,6 +43,25 @@
       "label": "especie",
       "dog": "perro",
       "cat": "gato"
+    }
+  },
+  "member": {
+    "logo": "logo",
+    "name": "nombre",
+    "province": "provincia",
+    "zone": "zona",
+    "homepage": "página principal",
+    "species": {
+      "label": "especies",
+      "dog": "perros",
+      "cat": "gatos",
+      "all": "perros y gatos"
+    }
+  },
+  "notification": {
+    "contactSubmitted": {
+      "title": "solicitud enviada",
+      "text": "Tu solicitud para unirte a la red fue enviada con exito! En cuanto la revisemos nos vamos a poner en contacto."
     }
   }
 }

@@ -1,17 +1,6 @@
 @import "../../theme";
 
-.container {
-  @include desktop {
-    width: 100%;
-    background: url("/ingreso.svg") no-repeat 95%;
-    background-size: auto 90%;
-  }
-}
-
 .form {
-  display: grid;
-  grid-gap: 1em;
-  grid-template-columns: 100%;
   grid-template-areas:
     "name"
     "image"
@@ -23,8 +12,6 @@
     "actions";
 
   @include tablet {
-    grid-template-columns: 50% 50%;
-    grid-template-rows: repeat(6, 4em);
     grid-template-areas:
       "name    age"
       "image   species"
@@ -33,117 +20,38 @@
       "info    info"
       "actions actions";
   }
-
-  #name {
-    grid-area: name;
-  }
-  #image {
-    grid-area: image;
-
-    padding-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
-    border: none;
-
-    @include tablet {
-      max-width: 15.2em;
-    }
-
-    &.error {
-      background-color: $color-background-default;
-
-      & p {
-        z-index: 1000;
-        padding-left: 1em;
-      }
-
-      & svg {
-        background-color: $color-background-error;
-      }
-    }
-
-    & > img {
-      border-radius: $border-roundness-default;
-      border: 1px solid $color-border;
-      height: 100%;
-    }
-
-    & > label {
-      margin-left: 1.2em;
-    }
-  }
-  #age {
-    grid-area: age;
-  }
-  #species {
-    grid-area: species;
-  }
-  #gender {
-    grid-area: gender;
-  }
-  #size {
-    grid-area: size;
-  }
-  #info {
-    grid-area: info;
-  }
-  #actions {
-    grid-area: actions;
-
-    display: flex;
-
-    & > button {
-      flex: 1 1;
-      padding: 0.5em;
-
-      svg {
-        width: 1em;
-        height: 1em;
-        fill: $color-secondary;
-      }
-
-      &:not([type="submit"]) {
-        display: none;
-        margin-right: 0.5em;
-
-        @include desktop {
-          display: unset;
-        }
-      }
-    }
-  }
-
-  padding: 3.5em;
-  margin: 1em;
-  background-color: $color-background-default;
-  border-radius: $border-roundness-default;
-
-  @include desktop {
-    max-width: 34em;
-  }
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
+.image {
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: none;
 
-  font-size: 0.8em;
-  padding: 0.6em 1.2em;
+  @include tablet {
+    max-width: 15.2em;
+  }
 
-  border: 1px solid $color-border;
-  border-bottom: 3px solid $color-font-label;
-  border-radius: $border-roundness-small $border-roundness-small 0 0;
+  &:global(.error) {
+    background-color: $color-background-default;
 
-  &.error {
-    background-color: $color-background-error;
-    & > label {
-      color: $color-font-highlight;
+    & p {
+      z-index: 1000;
+      padding-left: 1em;
     }
-    & > p {
-      color: $color-font-label;
-      cursor: default;
-      text-transform: capitalize;
-      margin-bottom: -1.5em;
+
+    & svg {
+      background-color: $color-background-error;
     }
+  }
+
+  & > img {
+    border-radius: $border-roundness-default;
+    border: 1px solid $color-border;
+    height: 100%;
+  }
+
+  & > label {
+    margin-left: 1.2em;
   }
 }

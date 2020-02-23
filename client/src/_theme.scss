@@ -18,8 +18,11 @@ $font-logo: bold 22px "Nunito", sans-serif;
 $border-roundness-default: 6px;
 $border-roundness-small: 2px;
 
+$transition-time: 0.5s;
+
 $threshold-tablet: 768px;
 @mixin tablet {
+  transition: all $transition-time;
   @media only screen and (min-width: $threshold-tablet) {
     @content;
   }
@@ -27,6 +30,7 @@ $threshold-tablet: 768px;
 
 $threshold-desktop: 1024px;
 @mixin desktop {
+  transition: all $transition-time;
   @media only screen and (min-width: $threshold-desktop) {
     @content;
   }
