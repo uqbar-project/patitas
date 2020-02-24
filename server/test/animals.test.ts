@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import chai from 'chai'
 import { should } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
@@ -6,7 +6,6 @@ import faker from 'faker'
 import { describe, it } from 'mocha'
 import { GENDERS, SIZES, SPECIES, Animal } from '@patitas/model'
 import * as dbHandler from './test-db-handler'
-
 
 const instance = axios.create({ baseURL: `http://localhost:${dbHandler.TEST_SERVER_PORT}/api` })
 
@@ -37,6 +36,12 @@ const withoutId = (obj: { _id?: string }) => {
   return response
 }
 
+const shouldOnlyHave = (response: AxiosResponse<Animal[]>, expectedAnimals: Animal[]) => {
+  response.data
+    .map(withoutId)
+    .should.be.deep.equal(expectedAnimals)
+}
+
 describe('Animals API', () => {
   const SUCCESS = 200
   const NOT_FOUND = 404
@@ -51,7 +56,8 @@ describe('Animals API', () => {
         const animal = createAnimal({ name: 'pupi' })
         await dbHandler.save<Animal>('animals')(animal)
         const response = await instance.get<Animal[]>('/animals')
-        withoutId(response.data[0]).should.be.deep.equal(animal)
+
+        shouldOnlyHave(response, [animal])
       })
       it('Should return an empty list if there are no animals in the db', async () => {
         const response = await instance.get<Animal[]>('/animals')
@@ -84,9 +90,7 @@ describe('Animals API', () => {
 
         const expectedAnimals = animals.slice(start, start + limit)
 
-        response.data
-          .map(withoutId)
-          .should.be.deep.equal(expectedAnimals)
+        shouldOnlyHave(response, expectedAnimals)
       })
 
       it('When limit exheeds existing animals and start is not indicated, all animals are returned', async () => {
@@ -96,9 +100,7 @@ describe('Animals API', () => {
 
         const response = await instance.get<Animal[]>(`/animals?limit=${limit}`)
 
-        response.data
-          .map(withoutId)
-          .should.be.deep.equal(animals)
+        shouldOnlyHave(response, animals)
       })
       it('When start exheeds existing animals, the response data is empty', async () => {
         const limit = 3
@@ -120,12 +122,6 @@ describe('Animals API', () => {
       })
     })
     describe('Filtering', () => {
-      it('Should have success status when the filters are well formed', async () => {
-        const animal = createAnimal({})
-        await dbHandler.save<Animal>('animals')(animal)
-        const response = await instance.get<Animal[]>(`/animals?filters[age$lte]=${animal.age}`)
-        response.status.should.equal(SUCCESS)
-      })
       it('Should return an empty list if no animals pass the filters', async () => {
         const ageLimit = 5
         const animal = createAnimal({ age: ageLimit })
@@ -141,8 +137,7 @@ describe('Animals API', () => {
         await dbHandler.save<Animal>('animals')(olderAnimal, youngerAnimal)
         const response = await instance.get<Animal[]>(`/animals?filters[age$lt]=${ageLimit}`)
 
-        response.data.length.should.be.equal(1)
-        withoutId(response.data[0]).should.be.deep.equal(youngerAnimal)
+        shouldOnlyHave(response, [youngerAnimal])
       })
       it('Should be able to filter by age in a range', async () => {
         const ageInRage = 5
@@ -152,28 +147,58 @@ describe('Animals API', () => {
           `/animals?filters[age$gte]=${ageInRage - 1}&filters[age$lte]=${ageInRage + 1}`
         )
 
-        withoutId(response.data[0]).should.be.deep.equal(animal)
+        shouldOnlyHave(response, [animal])
       })
       it('Should be able to filter by name', async () => {
-        const animalName = "Toto"
-        const animal = createAnimal({ name: animalName })
+        const animal = createAnimal({ name: "Toto" })
         await dbHandler.save<Animal>('animals')(animal)
-        const response = await instance.get<Animal[]>(`/animals?filters[name$eq]=${animalName}`)
+        const response = await instance.get<Animal[]>(`/animals?filters[name$eq]=Toto`)
 
-        withoutId(response.data[0]).should.be.deep.equal(animal)
+        shouldOnlyHave(response, [animal])
       })
+      it('Should be able to filter by gender', async () => {
+        const animal = createAnimal({ gender: "F" })
+        const otherAnimal = createAnimal({ gender: "M" })
+        await dbHandler.save<Animal>('animals')(otherAnimal, animal)
+        const response = await instance.get<Animal[]>(`/animals?filters[gender$eq]=F`)
 
-      it('Should fail with 422 if a filter key is not valid', async () => {
-        instance.get<Animal[]>(`/animals?filters[something$eq]=Toto`)
-          .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+        shouldOnlyHave(response, [animal])
       })
-      it('Should fail with 422 if a filter operation is not valid', async () => {
-        instance.get<Animal[]>(`/animals?filters[name$op]=Toto`)
-          .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+      it('Should be able to filter by size', async () => {
+        const animal = createAnimal({ size: "S" })
+        const otherAnimal = createAnimal({ size: "L" })
+        await dbHandler.save<Animal>('animals')(otherAnimal, animal)
+        const response = await instance.get<Animal[]>(`/animals?filters[size$eq]=S`)
+
+        shouldOnlyHave(response, [animal])
       })
-      it('Should fail with 422 if a filter operation is missing', async () => {
-        instance.get<Animal[]>(`/animals?filters[name]=Toto`)
-          .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+      it('Should be able to filter by species', async () => {
+        const animal = createAnimal({ species: "cat" })
+        const otherAnimal = createAnimal({ species: "dog" })
+        await dbHandler.save<Animal>('animals')(otherAnimal, animal)
+        const response = await instance.get<Animal[]>(`/animals?filters[species$eq]=cat`)
+
+        shouldOnlyHave(response, [animal])
+      })
+      describe('Response status', () => {
+        it('Should have success status when the filters are well formed', async () => {
+          const animal = createAnimal({})
+          await dbHandler.save<Animal>('animals')(animal)
+          const response = await instance.get<Animal[]>(`/animals?filters[age$lte]=${animal.age}`)
+          response.status.should.equal(SUCCESS)
+        })
+        it('Should fail with 422 if a filter key is not valid', async () => {
+          instance.get<Animal[]>(`/animals?filters[something$eq]=Toto`)
+            .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+        })
+        it('Should fail with 422 if a filter operation is not valid', async () => {
+          instance.get<Animal[]>(`/animals?filters[name$op]=Toto`)
+            .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+        })
+        it('Should fail with 422 if a filter operation is missing', async () => {
+          instance.get<Animal[]>(`/animals?filters[name]=Toto`)
+            .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+        })
       })
     })
 
@@ -217,3 +242,4 @@ describe('Animals API', () => {
   })
 
 })
+
