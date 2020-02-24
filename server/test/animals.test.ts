@@ -120,6 +120,12 @@ describe('Animals API', () => {
       })
     })
     describe('Filtering', () => {
+      it('Should have success status when the filters are well formed', async () => {
+        const animal = createAnimal({})
+        await dbHandler.save<Animal>('animals')(animal)
+        const response = await instance.get<Animal[]>(`/animals?filters[age$lte]=${animal.age}`)
+        response.status.should.equal(SUCCESS)
+      })
       it('Should return an empty list if no animals pass the filters', async () => {
         const ageLimit = 5
         const animal = createAnimal({ age: ageLimit })
@@ -159,6 +165,14 @@ describe('Animals API', () => {
 
       it('Should fail with 422 if a filter key is not valid', async () => {
         instance.get<Animal[]>(`/animals?filters[something$eq]=Toto`)
+          .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+      })
+      it('Should fail with 422 if a filter operation is not valid', async () => {
+        instance.get<Animal[]>(`/animals?filters[name$op]=Toto`)
+          .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
+      })
+      it('Should fail with 422 if a filter operation is missing', async () => {
+        instance.get<Animal[]>(`/animals?filters[name]=Toto`)
           .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
       })
     })
