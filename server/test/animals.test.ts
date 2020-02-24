@@ -41,6 +41,8 @@ describe('Animals API', () => {
   const SUCCESS = 200
   const NOT_FOUND = 404
   const BAD_REQUEST = 400
+  const UNPROCESSABLE_ENTITY = 422
+
   const failedRequestMessage = (statusCode: number) => `Request failed with status code ${statusCode.toString()}`
 
   describe('List', () => {
@@ -135,6 +137,29 @@ describe('Animals API', () => {
 
         response.data.length.should.be.equal(1)
         withoutId(response.data[0]).should.be.deep.equal(youngerAnimal)
+      })
+      it('Should be able to filter by age in a range', async () => {
+        const ageInRage = 5
+        const animal = createAnimal({ age: ageInRage })
+        await dbHandler.save<Animal>('animals')(animal)
+        const response = await instance.get<Animal[]>(
+          `/animals?filters[age$gte]=${ageInRage - 1}&filters[age$lte]=${ageInRage + 1}`
+        )
+
+        withoutId(response.data[0]).should.be.deep.equal(animal)
+      })
+      it('Should be able to filter by name', async () => {
+        const animalName = "Toto"
+        const animal = createAnimal({ name: animalName })
+        await dbHandler.save<Animal>('animals')(animal)
+        const response = await instance.get<Animal[]>(`/animals?filters[name$eq]=${animalName}`)
+
+        withoutId(response.data[0]).should.be.deep.equal(animal)
+      })
+
+      it('Should fail with 422 if a filter key is not valid', async () => {
+        instance.get<Animal[]>(`/animals?filters[something$eq]=Toto`)
+          .should.be.rejectedWith(failedRequestMessage(UNPROCESSABLE_ENTITY))
       })
     })
 

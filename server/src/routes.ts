@@ -26,13 +26,18 @@ router.post('/images', upload.single('file'), async ({ media, file }, res) => {
 // ANIMALS
 // ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-router.get('/animals', async ({ query: { limit = 0, start = 0, filters = {} }, db }) =>
-  Animals(db).list({
-    limit: Number(limit),
-    start: Number(start),
-    filters
-  })
-)
+router.get('/animals', async ({ query: { limit = 0, start = 0, filters = {} }, db }, res) => {
+  try {
+    return await Animals(db).list({
+      limit: Number(limit),
+      start: Number(start),
+      filters
+    })
+  } catch (error) {
+    res.status(422)
+    return error
+  }
+})
 
 router.get('/animals/:id', async ({ params: { id }, db }, res) => {
   const response = await Animals(db).read(id)
