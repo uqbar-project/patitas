@@ -5,10 +5,10 @@ import { isValidOperator } from '../middleware/mongo'
 const { keys } = Object
 const collection = (db: Db) => db.collection<Animal>('animals')
 
-type AnimalFilter = Record<string, string>
-type ListOptions = { limit: number, start: number, filters: AnimalFilter }
+type AnimalFilters = Record<string, string>
+type ListOptions = { limit: number, start: number, filters: AnimalFilters }
 
-const queryFilter = (filters: AnimalFilter): FilterQuery<Animal> => {
+const queryFilters = (filters: AnimalFilters): FilterQuery<Animal> => {
   let filterQuery: FilterQuery<Animal> = {}
 
   for (const key in filters) {
@@ -35,7 +35,7 @@ export default (db: Db) => ({
 
   list: async ({ limit, start, filters }: ListOptions) => {
     return collection(db)
-      .find(queryFilter(filters))
+      .find(queryFilters(filters))
       .limit(limit)
       .skip(start)
       .toArray()
