@@ -117,21 +117,21 @@ describe('Animals API', () => {
         response.status.should.be.equal(SUCCESS)
       })
     })
-    describe('Filter', () => {
-      it('Should return an empty list if no animals pass the filter', async () => {
+    describe('Filtering', () => {
+      it('Should return an empty list if no animals pass the filters', async () => {
         const ageLimit = 5
         const animal = createAnimal({ age: ageLimit })
         await dbHandler.save<Animal>('animals')(animal)
-        const response = await instance.get<Animal[]>(`/animals?filter[age$lt]=${ageLimit}`)
+        const response = await instance.get<Animal[]>(`/animals?filters[age$lt]=${ageLimit}`)
 
         response.data.should.be.empty
       })
-      it('Should return an empty list if no animals pass the filter', async () => {
+      it('Should return an empty list if no animals pass the filters', async () => {
         const ageLimit = 5
         const olderAnimal = createAnimal({ age: ageLimit })
         const youngerAnimal = createAnimal({ age: ageLimit - 1 })
         await dbHandler.save<Animal>('animals')(olderAnimal, youngerAnimal)
-        const response = await instance.get<Animal[]>(`/animals?filter[age$lt]=${ageLimit}`)
+        const response = await instance.get<Animal[]>(`/animals?filters[age$lt]=${ageLimit}`)
 
         response.data.length.should.be.equal(1)
         withoutId(response.data[0]).should.be.deep.equal(youngerAnimal)

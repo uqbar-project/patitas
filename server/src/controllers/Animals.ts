@@ -6,18 +6,18 @@ const { keys } = Object
 const collection = (db: Db) => db.collection<Animal>('animals')
 
 type AnimalFilter = Record<string, string>
-type ListOptions = { limit: number, start: number, filter: AnimalFilter }
+type ListOptions = { limit: number, start: number, filters: AnimalFilter }
 
-const queryFilter = (filter: AnimalFilter): FilterQuery<Animal> => {
+const queryFilter = (filters: AnimalFilter): FilterQuery<Animal> => {
   let filterQuery: FilterQuery<Animal> = {}
 
-  for (const key in filter) {
+  for (const key in filters) {
     const [fieldName, operator] = key.split("$")
     if (!allKeys.includes(fieldName)) throw `Invalid key: ${fieldName}`
     if (!isValidOperator(operator)) throw `Invalid operator: ${operator}`
 
     filterQuery[fieldName] = filterQuery[fieldName] ?? {}
-    filterQuery[fieldName][`$${operator}`] = fieldValueMapper(fieldName, filter[key])
+    filterQuery[fieldName][`$${operator}`] = fieldValueMapper(fieldName, filters[key])
   }
   return filterQuery
 }
@@ -33,9 +33,9 @@ const fieldValueMapper = (fieldName: string, value: string) => {
 
 export default (db: Db) => ({
 
-  list: async ({ limit, start, filter }: ListOptions) => {
+  list: async ({ limit, start, filters }: ListOptions) => {
     return collection(db)
-      .find(queryFilter(filter))
+      .find(queryFilter(filters))
       .limit(limit)
       .skip(start)
       .toArray()
