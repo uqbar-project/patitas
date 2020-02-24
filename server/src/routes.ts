@@ -30,7 +30,7 @@ router.get('/animals', async ({ query: { limit = 0, start = 0, filter = {} }, db
   Animals(db).list({
     limit: Number(limit),
     start: Number(start),
-    filter: filter,
+    filter,
   })
 )
 

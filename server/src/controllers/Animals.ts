@@ -1,28 +1,41 @@
-import { Db, ObjectId } from 'mongodb'
-import { Animal, validateAnimal } from '@patitas/model'
-import { urlToMongoFilter } from '../middleware/mongo'
+import { Db, ObjectId, FilterQuery } from 'mongodb'
+import { Animal, validateAnimal, allKeys } from '@patitas/model'
+import { isValidOperator } from '../middleware/mongo'
 
 const { keys } = Object
 const collection = (db: Db) => db.collection<Animal>('animals')
 
-type ListOptions = { limit: number, start: number, filter: any }
-type QueryFilter = {
-  [P in keyof Animal]?: any
+type AnimalFilter = Record<string, string>
+type ListOptions = { limit: number, start: number, filter: AnimalFilter }
+
+const queryFilter = (filter: AnimalFilter): FilterQuery<Animal> => {
+  let filterQuery: FilterQuery<Animal> = {}
+
+  for (const key in filter) {
+    const [fieldName, operator] = key.split("$")
+    if (!allKeys.includes(fieldName)) throw `Invalid key: ${fieldName}`
+    if (!isValidOperator(operator)) throw `Invalid operator: ${operator}`
+
+    filterQuery[fieldName] = filterQuery[fieldName] ?? {}
+    filterQuery[fieldName][`$${operator}`] = fieldValueMapper(fieldName, filter[key])
+  }
+  return filterQuery
+}
+
+const fieldValueMapper = (fieldName: string, value: string) => {
+  switch (fieldName) {
+    case "age":
+      return Number(value)
+    default:
+      return value
+  }
 }
 
 export default (db: Db) => ({
 
   list: async ({ limit, start, filter }: ListOptions) => {
-    let queryFilter: QueryFilter = {}
-    for (const key in filter) {
-      console.log(`Filtering with ${key} -> ${filter[key]}`)
-      //      const [fieldName, operator] = key.split("$")
-      //      queryFilter[fieldName] = queryFilter[fieldName] || {}
-      //      queryFilter[fieldName][`${operator}`] = filter[key]
-      console.log(queryFilter)
-    }
     return collection(db)
-      .find(urlToMongoFilter(filter))
+      .find(queryFilter(filter))
       .limit(limit)
       .skip(start)
       .toArray()
