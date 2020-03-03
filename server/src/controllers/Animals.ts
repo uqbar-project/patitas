@@ -1,19 +1,45 @@
-import { Db, ObjectId } from 'mongodb'
-import { Animal, validateAnimal } from '@patitas/model'
+import { Db, ObjectId, FilterQuery } from 'mongodb'
+import { Animal, validateAnimal, allKeys } from '@patitas/model'
+import { isValidOperator } from '../middleware/mongo'
 
 const { keys } = Object
 const collection = (db: Db) => db.collection<Animal>('animals')
 
-type ListOptions = { limit: number, start: number }
+type AnimalFilters = Record<string, string>
+type ListOptions = { limit: number, start: number, filters: AnimalFilters }
+
+const queryFilters = (filters: AnimalFilters): FilterQuery<Animal> => {
+  let filterQuery: FilterQuery<Animal> = {}
+
+  for (const key in filters) {
+    const [fieldName, operator] = key.split("$")
+    if (!allKeys.includes(fieldName)) throw `Invalid key: ${fieldName}`
+    if (!isValidOperator(operator)) throw `Invalid operator: ${operator}`
+
+    filterQuery[fieldName] = filterQuery[fieldName] ?? {}
+    filterQuery[fieldName][`$${operator}`] = fieldValueMapper(fieldName, filters[key])
+  }
+  return filterQuery
+}
+
+const fieldValueMapper = (fieldName: string, value: string) => {
+  switch (fieldName) {
+    case "age":
+      return Number(value)
+    default:
+      return value
+  }
+}
 
 export default (db: Db) => ({
 
-  list: async ({ limit, start }: ListOptions) =>
-    collection(db)
-      .find()
+  list: async ({ limit, start, filters }: ListOptions) => {
+    return collection(db)
+      .find(queryFilters(filters))
       .limit(limit)
       .skip(start)
-      .toArray(),
+      .toArray()
+  },
 
   read: async (id: string) => collection(db).findOne(new ObjectId(id)),
 

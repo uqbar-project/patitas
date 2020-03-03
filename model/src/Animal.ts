@@ -19,9 +19,9 @@ export interface Animal {
   readonly image: string
 }
 
-export const validateAnimal = (obj: any) => {
-  const allKeys = ['name', 'species', 'gender', 'age', 'size', 'info', 'image'].sort()
+export const allKeys = ['name', 'species', 'gender', 'age', 'size', 'info', 'image'].sort()
 
+export const validateAnimal = (obj: any) => {
   const problems: Record<string, string> = {}
 
   for (const key in obj) { if (!allKeys.includes(key) && key !== '_id') problems[key] = 'unknown' }
